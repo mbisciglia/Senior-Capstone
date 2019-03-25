@@ -5,41 +5,42 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
+
 <body>
 
-<div class="container login-container">
-            <div class="row">
-                <div class="col-md-6 login-form-1">
-                    <h3>Sign In</h3>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="SIemail" placeholder="Your Email *" value="" />
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="SIpass" placeholder="Your Password *" value="" />
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" class="btnSubmit" id="SIsubmit" value="Login" />
-                        </div>
-                        <div class="form-group">
-                            <a href="#" class="btnForgetPwd" id="forgot">Forget Password?</a>
-                        </div>
-                    
+    <div class="container login-container">
+        <div class="row">
+            <div class="col-md-6 login-form-1">
+                <h3>Sign In</h3>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="SIemail" placeholder="Your Email *" value="" />
                 </div>
-                <div class="col-md-6 login-form-2">
-                    <h3>Create Account</h3>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="CAemail" placeholder="Your Email *" value="" />
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="CApass" placeholder="Your Password *" value="" />
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" class="btnSubmit" id="CAsubmit" value="Create" />
-                        </div>
-                    </form>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="SIpass" placeholder="Your Password *" value="" />
                 </div>
+                <div class="form-group">
+                    <input type="submit" class="btnSubmit" id="SIsubmit" value="Login" />
+                </div>
+                <div class="form-group">
+                    <a href="#" class="btnForgetPwd" id="forgot">Forget Password?</a>
+                </div>
+
+            </div>
+            <div class="col-md-6 login-form-2">
+                <h3>Create Account</h3>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="CAemail" placeholder="Your Email *" value="" />
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="CApass" placeholder="Your Password *" value="" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btnSubmit" id="CAsubmit" value="Create" />
+                </div>
+                </form>
             </div>
         </div>
+    </div>
 </body>
 
 
@@ -50,107 +51,105 @@
 
 
 
-    document.getElementById('SIsubmit').addEventListener('click', (event)=> {
+    document.getElementById('SIsubmit').addEventListener('click', (event) => {
         event.preventDefault();
         const email = document.getElementById('SIemail').value;
         const password = document.getElementById('SIpass').value;
 
-        try{
-                const userData = {
-                email: email,
-                pass: password
-                };
-                const fetchConfigData = {
-                    method: "POST",
-                    body: JSON.stringify(userData), 
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                };
-                
-                console.log(fetchConfigData);
-                const response = fetch("/signIn", fetchConfigData);
-                if(response.ok) {
-                    const ret = response.json();
-                    console.log(ret);
-                    console.log('made it!')
-
-                } else {
-                    console.log("Error with the response data");
-                }                   
+        const userData = {
+            email: email,
+            pass: password
+        };
+        const fetchConfigData = {
+            method: "POST",
+            body: JSON.stringify(userData),
+            headers: {
+                "Content-Type": "application/json"
             }
-            catch (err) {
-                console.log(`Error: ${err}`);
-            }   
-            window.location = "map1";
+        };
+
+        console.log(fetchConfigData);
+
+        const response = fetch("/signIn", fetchConfigData).then(resp => {
+            console.log(resp);
+            if(resp.status == 200)
+            {
+                window.location = "map1";
+            }
+            return resp.text();
+        }).then(respBody => {
+            console.log(respBody);
+        }).catch(err => {
+            console.error(err);
+        });
     });
 
 
 
-    
-    document.getElementById('CAsubmit').addEventListener('click', (event)=> {
+
+    document.getElementById('CAsubmit').addEventListener('click', (event) => {
         event.preventDefault();
         const email = document.getElementById('CAemail').value;
         const password = document.getElementById('CApass').value;
 
-        try{
-                const userData = {
+        try {
+            const userData = {
                 email: email,
                 pass: password
-                };
-                const fetchConfigData = {
-                    method: "POST",
-                    body: JSON.stringify(userData), 
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                };
-                
-                console.log(fetchConfigData);
-                const response = fetch("/createAcc", fetchConfigData);
-                if(response.ok) {
-                    const ret = response.json();
-                    console.log(ret);
-                    console.log('made it!')
+            };
+            const fetchConfigData = {
+                method: "POST",
+                body: JSON.stringify(userData),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            };
 
-                } else {
-                    console.log("Error with the response data");
-                }                   
-            }catch (err) {
-                console.log(`Error: ${err}`);
-            }         
+            console.log(fetchConfigData);
+            const response = fetch("/createAcc", fetchConfigData);
+            if (response.ok) {
+                const ret = response.json();
+                console.log(ret);
+                console.log('made it!')
+
+            } else {
+                console.log("Error with the response data");
+            }
+        } catch (err) {
+            console.log(`Error: ${err}`);
+        }
     });
 
 
-    document.getElementById('forgot').addEventListener('click', (event)=> {
+    document.getElementById('forgot').addEventListener('click', (event) => {
         event.preventDefault();
         const email = document.getElementById('SIemail').value;
 
-        try{
-                const userData = {
+        try {
+            const userData = {
                 email: email
-                };
-                const fetchConfigData = {
-                    method: "POST",
-                    body: JSON.stringify(userData), 
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                };
-                
-                console.log(fetchConfigData);
-                const response = fetch("/forgotPass", fetchConfigData);
-                if(response.ok) {
-                    const ret = response.json();
-                    console.log(ret);
-                    console.log('made it!')
+            };
+            const fetchConfigData = {
+                method: "POST",
+                body: JSON.stringify(userData),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            };
 
-                } else {
-                    console.log("Error with the response data");
-                }                   
-            }catch (err) {
-                console.log(`Error: ${err}`);
-            }         
+            console.log(fetchConfigData);
+            const response = fetch("/forgotPass", fetchConfigData);
+            if (response.ok) {
+                const ret = response.json();
+                console.log(ret);
+                console.log('made it!')
+
+            } else {
+                console.log("Error with the response data");
+            }
+        } catch (err) {
+            console.log(`Error: ${err}`);
+        }
     });
 
 </script>
