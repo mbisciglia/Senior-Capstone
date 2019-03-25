@@ -1,86 +1,24 @@
 <!DOCTYPE html>
 <html>
+<body>
 
+<form>
+  <input id="file" type="file" name="pic" accept="image/*">
+  <input id="submit" type="submit">
+</form>
 
+<p><strong>Note:</strong> The accept attribute of the input tag is not supported in Internet Explorer 9 (and earlier versions), and Safari 5 (and earlier).</p>
+<p><strong>Note:</strong> Because of security issues, this example will not allow you to upload files.</p>
+
+</body>
 </html>
 
+
 <script>
-    var firebase = firebase.database();
-
-
-
-    document.getElementById('SIsubmit').addEventListener('click', (event)=> {
+      
+    document.getElementById('submit').addEventListener('click', (event)=> {
         event.preventDefault();
-        const email = document.getElementById('SIemail').value;
-        const password = document.getElementById('SIpass').value;
-
-        try{
-                const userData = {
-                email: email,
-                pass: password
-                };
-                const fetchConfigData = {
-                    method: "POST",
-                    body: JSON.stringify(userData), 
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                };
-                
-                console.log(fetchConfigData);
-                const response = fetch("/signIn", fetchConfigData);
-                if(response.ok) {
-                    const ret = response.json();
-                    console.log(ret);
-                    console.log('made it!')
-
-                } else {
-                    console.log("Error with the response data");
-                }                   
-            }
-            catch (err) {
-                console.log(`Error: ${err}`);
-            }   
-            window.location = "map1";
-    });
-
-
-
-    
-    document.getElementById('CAsubmit').addEventListener('click', (event)=> {
-        event.preventDefault();
-        const email = document.getElementById('CAemail').value;
-        const password = document.getElementById('CApass').value;
-
-        try{
-                const userData = {
-                email: email,
-                pass: password
-                };
-                const fetchConfigData = {
-                    method: "POST",
-                    body: JSON.stringify(userData), 
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                };
-                
-                console.log(fetchConfigData);
-                const response = fetch("/createAcc", fetchConfigData);
-                if(response.ok) {
-                    const ret = response.json();
-                    console.log(ret);
-                    console.log('made it!')
-
-                } else {
-                    console.log("Error with the response data");
-                }                   
-            }catch (err) {
-                console.log(`Error: ${err}`);
-            }         
-    });
-
-
-
+        const email = document.getElementById('file').value;
+        console.log(email);
 
 </script>

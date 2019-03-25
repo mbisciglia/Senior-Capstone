@@ -32,6 +32,9 @@ console.log(firebase.auth) // Undefined
 app.get('/', async (req, res) => {
     res.render('login');
 });
+app.get('/custom', async (req, res) => {
+  res.render('custom');
+});
 
 app.get('/map1', async (req, res) => {
     
@@ -42,6 +45,22 @@ app.get('/map2', async (req, res) => {
     
     res.render('map2');
 });
+
+
+app.post('/uploadPhoto', async (req, res) => {
+  var storageRef = firebase.storage().ref();
+
+  const imageRef = req.body.image;
+
+  var file = storageRef.child(imageRef);
+
+
+  ref.put(file).then(function(snapshot) {
+    console.log('Uploaded a blob or file!');
+  });
+
+    res.send({status: 'SUCCESS'});  
+  });
 
 app.post('/signIN', async (req, res) => {
     const email = req.body.email;
@@ -87,6 +106,37 @@ app.post('/forgotPass', async (req, res) => {
       });
 
     res.send({status: 'SUCCESS'});  
+});
+
+
+
+app.post('/signIN', async (req, res) => {
+  const email = req.body.email;
+  const password = req.body.pass;
+
+
+  firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorCode);
+      console.log(errorMessage);
+    });
+    res.send({status: 'SUCCESS'});  
+  });
+
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    var name = user.displayName;
+    var email = user.email;
+    var photoUrl = user.photoURL;
+    var emailVerified = user.emailVerified;
+    var uid = user.uid;
+    console.log("Current user is: " + email);
+  } else {
+    // No user is signed in.
+  }
 });
 
 
