@@ -26,6 +26,7 @@ width: 55vw;
 
     function fetchReading(nodeID){
     var ref = db.ref(nodeID);
+    
     var val;
     ref.on("value", function(snapshot) {
     val = snapshot.val();

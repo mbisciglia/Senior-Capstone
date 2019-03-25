@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+
+</html>
+
+<script>
+    var firebase = firebase.database();
+
+
+
+    document.getElementById('SIsubmit').addEventListener('click', (event)=> {
+        event.preventDefault();
+        const email = document.getElementById('SIemail').value;
+        const password = document.getElementById('SIpass').value;
+
+        try{
+                const userData = {
+                email: email,
+                pass: password
+                };
+                const fetchConfigData = {
+                    method: "POST",
+                    body: JSON.stringify(userData), 
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                };
+                
+                console.log(fetchConfigData);
+                const response = fetch("/signIn", fetchConfigData);
+                if(response.ok) {
+                    const ret = response.json();
+                    console.log(ret);
+                    console.log('made it!')
+
+                } else {
+                    console.log("Error with the response data");
+                }                   
+            }
+            catch (err) {
+                console.log(`Error: ${err}`);
+            }   
+            window.location = "map1";
+    });
+
+
+
+    
+    document.getElementById('CAsubmit').addEventListener('click', (event)=> {
+        event.preventDefault();
+        const email = document.getElementById('CAemail').value;
+        const password = document.getElementById('CApass').value;
+
+        try{
+                const userData = {
+                email: email,
+                pass: password
+                };
+                const fetchConfigData = {
+                    method: "POST",
+                    body: JSON.stringify(userData), 
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                };
+                
+                console.log(fetchConfigData);
+                const response = fetch("/createAcc", fetchConfigData);
+                if(response.ok) {
+                    const ret = response.json();
+                    console.log(ret);
+                    console.log('made it!')
+
+                } else {
+                    console.log("Error with the response data");
+                }                   
+            }catch (err) {
+                console.log(`Error: ${err}`);
+            }         
+    });
+
+
+
+
+</script>
