@@ -1,5 +1,47 @@
 <!DOCTYPE html>
 <html>
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 25%; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 100%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+</style>    
 
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -43,6 +85,16 @@
     </div>
 </body>
 
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p id="errorBox">error msg</p>
+  </div>
+
+</div>
 
 </html>
 
@@ -68,13 +120,33 @@
             }
         };
 
-        console.log(fetchConfigData);
 
         const response = fetch("/signIn", fetchConfigData).then(resp => {
-            console.log(resp);
             if(resp.status == 200)
             {
                 window.location = "map1";
+            }
+            else
+            {
+                console.log("resp.status: " + resp.status);
+                // Get the modal
+                var modal = document.getElementById('myModal');
+                // Get the <span> element that closes the modal
+                var span = document.getElementsByClassName("close")[0];
+                var content = document.getElementById("errorBox");
+
+                content.innerHTML = "Incorrect Email or password."; 
+                modal.style.display = "block";
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                  modal.style.display = "none";
+                }
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                  if (event.target == modal) {
+                    modal.style.display = "none";
+                  }
+                }
             }
             return resp.text();
         }).then(respBody => {
@@ -91,8 +163,6 @@
         event.preventDefault();
         const email = document.getElementById('CAemail').value;
         const password = document.getElementById('CApass').value;
-
-        try {
             const userData = {
                 email: email,
                 pass: password
@@ -105,27 +175,50 @@
                 }
             };
 
-            console.log(fetchConfigData);
-            const response = fetch("/createAcc", fetchConfigData);
-            if (response.ok) {
-                const ret = response.json();
-                console.log(ret);
-                console.log('made it!')
-
-            } else {
-                console.log("Error with the response data");
+            const response = fetch("/createAcc", fetchConfigData).then(resp => {
+            if(resp.status == 200)
+            {
+                window.location = "map1";
             }
-        } catch (err) {
-            console.log(`Error: ${err}`);
-        }
-    });
+            else
+            {
+                console.log("resp.status: " + resp.status);
+                // Get the modal
+                var modal = document.getElementById('myModal');
+                // Get the <span> element that closes the modal
+                var span = document.getElementsByClassName("close")[0];
+                var content = document.getElementById("errorBox");
 
+                content.innerHTML = "Could not create Acc, make sure that email is valid."; 
+                modal.style.display = "block";
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                  modal.style.display = "none";
+                }
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                  if (event.target == modal) {
+                    modal.style.display = "none";
+                  }
+                }
+            }
+            return resp.text();
+
+        }).then(respBody => {
+            console.log(respBody);
+        }).catch(err => {
+            console.error(err);
+        });
+    });
 
     document.getElementById('forgot').addEventListener('click', (event) => {
         event.preventDefault();
         const email = document.getElementById('SIemail').value;
-
-        try {
+        var modal = document.getElementById('myModal');
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+        var content = document.getElementById("errorBox");
+     
             const userData = {
                 email: email
             };
@@ -137,19 +230,50 @@
                 }
             };
 
-            console.log(fetchConfigData);
-            const response = fetch("/forgotPass", fetchConfigData);
-            if (response.ok) {
-                const ret = response.json();
-                console.log(ret);
-                console.log('made it!')
 
-            } else {
-                console.log("Error with the response data");
+
+            const response = fetch("/forgotPass", fetchConfigData).then(resp => {
+            if(resp.status == 200)
+            {
+                content.innerHTML = "Password Reset has been sent to your email."; 
+                modal.style.display = "block";
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                  modal.style.display = "none";
+                }
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                  if (event.target == modal) {
+                    modal.style.display = "none";
+                  }
+                }
             }
-        } catch (err) {
-            console.log(`Error: ${err}`);
-        }
+            else
+            {
+                console.log("resp.status: " + resp.status);
+                // Get the modal
+
+
+                content.innerHTML = "Issue with sending forgoten password email, make sure email is valid."; 
+                modal.style.display = "block";
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                  modal.style.display = "none";
+                }
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                  if (event.target == modal) {
+                    modal.style.display = "none";
+                  }
+                }
+            }
+            return resp.text();
+        }).then(respBody => {
+            console.log(respBody);
+        }).catch(err => {
+            console.error(err);
+        });
     });
+
 
 </script>

@@ -32,6 +32,7 @@ firebase.initializeApp(config);
 app.get('/', async (req, res) => {
   res.render('login');
 });
+
 app.get('/custom', async (req, res) => {
   res.render('custom');
 });
@@ -47,27 +48,30 @@ app.get('/map2', async (req, res) => {
 });
 
 
-app.post('/uploadPhoto', async (req, res) => {
-  var storageRef = firebase.storage().ref();
+//DOES NOT WORK
+app.post('/uploadImage', async (req, res) => {
+  const path = req.body.path;
+  var db = firebase.database();
+  var ref = db.ref().storageBucket();
 
-  const imageRef = req.body.image;
-
-  var file = storageRef.child(imageRef);
-
-
-  ref.put(file).then(function (snapshot) {
+  ref.child("images").put(path).then(function(snapshot) {
     console.log('Uploaded a blob or file!');
+    res.status(200).send('SUCCESS');
+  }).catch(function (error){
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    console.log(errorCode);
+    console.log(errorMessage);
+    res.status(400).send('FAIL');
   });
-
-  res.send({ status: 'SUCCESS' });
 });
 
-app.post('/signIN', async (req, res) => {
+app.post('/signIn', async (req, res) => {
   const email = req.body.email;
   const password = req.body.pass;
 
   firebase.auth().signInWithEmailAndPassword(email, password).then(success => {
-    console.log(success);
     res.status(200).send('SUCCESS');
   }).catch(function (error) {
     // Handle Errors here.
@@ -78,56 +82,41 @@ app.post('/signIN', async (req, res) => {
     res.status(400).send('FAIL');
   });
 
-  
+
 });
 
 app.post('/createAcc', async (req, res) => {
   const email = req.body.email;
   const password = req.body.pass;
 
-  firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
+  firebase.auth().createUserWithEmailAndPassword(email, password).then(success => {
+    res.status(200).send('SUCCESS');
+  }).catch(function (error) {
     // Handle Errors here.
     var errorCode = error.code;
     var errorMessage = error.message;
     console.log(errorCode);
     console.log(errorMessage);
+    res.status(400).send('FAIL');
   });
-
-  res.send({ status: 'SUCCESS' });
 });
 
 
 app.post('/forgotPass', async (req, res) => {
   const email = req.body.email;
 
-  firebase.auth().sendPasswordResetEmail(email).then(function () {
-    console.log("password change email sent");
+  firebase.auth().sendPasswordResetEmail(email).then(success => {
+    console.log(success);
+    res.status(200).send('SUCCESS');
   }).catch(function (error) {
     var errorCode = error.code;
     var errorMessage = error.message;
     console.log(errorCode);
     console.log(errorMessage);
+    res.status(400).send('FAIL');
   });
-
-  res.send({ status: 'SUCCESS' });
 });
 
-
-
-app.post('/signIN', async (req, res) => {
-  const email = req.body.email;
-  const password = req.body.pass;
-
-
-  firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    console.log(errorCode);
-    console.log(errorMessage);
-  });
-  res.send({ status: 'SUCCESS' });
-});
 
 
 firebase.auth().onAuthStateChanged(function (user) {

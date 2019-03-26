@@ -40,13 +40,7 @@ width: 55vw;
     
 
 
-    function helloWorld(){
-        console.log('hello world');
-        var div = document.getElementById('outputBox');
-        div.innerHTML += 'hello world from the living room';
-    }
         function goodbyeWorld(){
-        console.log('Goodbye world');
         var div = document.getElementById('demo');
         div.innerHTML = '';
     }
@@ -54,7 +48,6 @@ width: 55vw;
     function printRoomData(roomID){
 
         var reading = fetchReading(roomID);
-        console.log(reading);
         document.getElementById("demo").innerHTML = "Room " + roomID + "<br/>"
         + "Temperature: " + reading.Readings.temp + "<br/>"
         + "Humidity: " + reading.Readings.humidity + "<br/>";
