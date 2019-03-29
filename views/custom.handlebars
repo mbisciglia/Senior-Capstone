@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html>
-
 <body>
-<div class="input-group mb-3">
-  <input type="text" class="form-control" placeholder="New Building Name" aria-label="New Building Name" aria-describedby="basic-addon2">
-  <div class="input-group-append">
-    <button class="btn btn-outline-secondary" type="button">Add</button>
-  </div>
+
+
+<div id="testContainer" class="testContainer" style="
+position: relative;
+width: 55vw;
+">
+
+
+			<img id="image" alt="Bootstrap Image Preview" src="https://i.redd.it/uo0u67glvlq01.jpg" />
+
+
 </div>
-<br>
-  <div id="filesubmit">
-    <input type="file" id="file" accept="image/*" />
-    <button id="upload">upload</button>
-  </div>
-  <p><strong>Note:</strong> The accept attribute of the input tag is not supported in Internet Explorer 9 (and earlier
-    versions), and Safari 5 (and earlier).</p>
 
 </body>
 
@@ -23,61 +21,5 @@
 
 <script>
 
-  //does not work
-  document.getElementById('upload').addEventListener('click', (event) => {
-    event.preventDefault();
-    const path = document.getElementById('file').value;
-    console.log(path);
-
-    const userData = {
-      path: path
-    };
-    const fetchConfigData = {
-      method: "POST",
-      body: JSON.stringify(userData),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    };
-
-    const response = fetch("/uploadImage", fetchConfigData).then(resp => {
-      if (resp.status == 200) {
-        content.innerHTML = "File has been uploaded to firebase.";
-        modal.style.display = "block";
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function () {
-          modal.style.display = "none";
-        }
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }
-        }
-      }
-      else {
-        console.log("resp.status: " + resp.status);
-        // Get the modal
-
-        content.innerHTML = "Issue uploading image.";
-        modal.style.display = "block";
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function () {
-          modal.style.display = "none";
-        }
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }
-        }
-      }
-      return resp.text();
-    }).then(respBody => {
-      console.log(respBody);
-    }).catch(err => {
-      console.error(err);
-    });
-  });
 
 </script>

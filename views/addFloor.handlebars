@@ -24,6 +24,14 @@
 					<p class="help-block">
                         Input an image along with new floor name to create new map
 					</p>
+
+					<p id="doug-help-plz">
+						ask about promises - async calls to db for ret uploaded iamge. 
+						also persistance and how to deal with users correctly. 
+						Might include sending email and pass to each page to resign in?
+				
+						
+					</p>
 				</div>
 				<button type="submit" id="submit" class="btn btn-primary">
 					Submit
@@ -43,12 +51,42 @@
 
     document.getElementById('submit').addEventListener('click', (event) => {
         event.preventDefault();
-        const file = document.getElementById('file').files[0];
+        var file = document.getElementById('file').files[0];
+		const floor = document.getElementById('addfloor').value;
+		if(floor == null || file == null)
+		{
+			alert("You must input a floor name and an image.");
+			return;
+		}
+		file = new File([file], floor, {type: 'image/png'});
+
+
+
         var storageRef = firebase.storage().ref();
-        var ref = storageRef.child(file.name);
+        var ref = storageRef.child("images/testAcc/"+file);
         ref.put(file).then(function(snapshot) {
         console.log('Uploaded a blob or file!');
         });
-    });
+
+		ref.getDownloadURL().then(function(url) {
+		// `url` is the download URL for 'images/stars.jpg'
+
+		// This can be downloaded directly:
+		var xhr = new XMLHttpRequest();
+		xhr.responseType = 'blob';
+		xhr.onload = function(event) {
+		var blob = xhr.response;
+		};
+		xhr.open('GET', url);
+		xhr.send();
+
+		// Or inserted into an <img> element:
+		var img = document.getElementById('image');
+			img.src = url;
+		}).catch(function(error) {
+			console.log(error);
+			console.log("there was an error getting images");
+		});
+		});
 
 </script>
