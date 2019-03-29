@@ -35,7 +35,7 @@ app.get('/', async (req, res) => {
 
 
 
-app.get('/test', async (req, res) => {
+app.get('/custom', async (req, res) => {
   res.render('custom');
 });
 

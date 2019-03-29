@@ -36,6 +36,14 @@
 				<button type="submit" id="submit" class="btn btn-primary">
 					Submit
 				</button>
+				<br></br>
+				<br></br>
+				<button type="submit" id="makeDivs" class="btn btn-primary">
+					Add Rooms
+				</button>
+				<p>
+					When you're done submitting floors, move on to the next step of customization by clicking here.
+				</p>
 			</form>
 		</div>
 		<div class="col-md-8">
@@ -49,23 +57,35 @@
 
 <script>    
 
+document.getElementById('makeDivs').addEventListener('click', (event) => {
+        event.preventDefault();
+    	window.location = "custom";
+});
+
+
     document.getElementById('submit').addEventListener('click', (event) => {
         event.preventDefault();
         var file = document.getElementById('file').files[0];
-		const floor = document.getElementById('addfloor').value;
+		var floor = document.getElementById('addfloor').value;
 		if(floor == null || file == null)
 		{
 			alert("You must input a floor name and an image.");
 			return;
 		}
+
+		console.log(file);
+		console.log(floor)
 		file = new File([file], floor, {type: 'image/png'});
 
 
 
         var storageRef = firebase.storage().ref();
-        var ref = storageRef.child("images/testAcc/"+file);
+        var ref = storageRef.child("images/testAcc/"+floor);
         ref.put(file).then(function(snapshot) {
         console.log('Uploaded a blob or file!');
+		var db = firebase.database();
+    	var ref = db.ref("images/testAcc/");
+		ref.push({name: floor})
         });
 
 		ref.getDownloadURL().then(function(url) {

@@ -1,25 +1,110 @@
 <!DOCTYPE html>
 <html>
+
 <body>
+	<select id="floorList"></select>
 
-
-<div id="testContainer" class="testContainer" style="
-position: relative;
+	<div id="testContainer" class="testContainer" style="
+position: absolute;
 width: 55vw;
+height:100%;
 ">
-
-
-			<img id="image" alt="Bootstrap Image Preview" src="https://i.redd.it/uo0u67glvlq01.jpg" />
-
-
-</div>
-
+		<img id="img" alt="Bootstrap Image Preview" style="position:absolute"
+			src="https://i.redd.it/uo0u67glvlq01.jpg" />
+	</div>
 </body>
 
 </html>
 
-
 <script>
 
 
+
+	(() => {
+		document.getElementById('floorList').addEventListener('change', function () {
+			loadFloor(this.value);
+		});
+	})();
+
+	function loadFloor(floorName) {
+		console.log(`Loading ${floorName}`);
+		var storageRef = firebase.storage().ref();
+		var ref = storageRef.child("images/testAcc/" + floorName);
+		ref.getDownloadURL().then(function (url) {
+			// `url` is the download URL for 'images/stars.jpg'
+
+			// This can be downloaded directly:
+			var xhr = new XMLHttpRequest();
+			xhr.responseType = 'blob';
+			xhr.onload = function (event) {
+				var blob = xhr.response;
+			};
+			xhr.open('GET', url);
+			xhr.send();
+
+			// Or inserted into an <img> element:
+			var img = document.getElementById('img');
+			img.src = url;
+		}).catch(function (error) {
+			console.log(error);
+			console.log("there was an error getting images");
+		});
+
+	}
+
+	loadFloorNames();
+
+	function fetchNames() {
+		var names = [];
+
+		var isFirst = true;
+		return new Promise((resolve, reject) => {
+			db = firebase.database().ref("images/testAcc/");
+			db.on("value", function (snapshot) {
+				snapshot.forEach(function (childSnapshot) {
+					var childData = childSnapshot.val();
+
+					if (isFirst) {
+						isFirst = false;
+						loadFloor(childData.name);
+					}
+
+					//console.log(childData);
+					names.push(childData.name);
+				});
+
+				resolve(names);
+			});
+		});
+	}
+
+	function loadFloorNames() {
+		var list = document.getElementById("floorList");
+
+		fetchNames()
+			.then(names => {
+				console.log("Promise result", names);
+				for (var i = 0, l = names.length; i < l; i++) {
+					var option = document.createElement("option");
+					option.text = names[i];
+					list.add(option);
+					//console.log("bazzanngga");
+				}
+			})
+			.catch(err => {
+				console.error(err);
+			});
+	}
+
+	function getMousePos() {
+		var rect = canvas.getBoundingClientRect();
+		return {
+			x: evt.clientX - rect.left,
+			y: evt.clientY - rect.top
+		};
+	}
+
+	function foo() {
+		console.log("made it to foo"); // The function returns the product of p1 and p2
+	}
 </script>
