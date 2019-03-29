@@ -33,8 +33,8 @@ app.get('/', async (req, res) => {
   res.render('login');
 });
 
-app.get('/custom', async (req, res) => {
-  res.render('custom');
+app.get('/test', async (req, res) => {
+  res.render('newCustom');
 });
 
 app.get('/map1', async (req, res) => {
@@ -81,6 +81,8 @@ app.post('/signIn', async (req, res) => {
     console.log(errorMessage);
     res.status(400).send('FAIL');
   });
+
+
 
 
 });

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div class="container-fluid">
+	<div class="row">
+<div class="col-md-4">
+			<form role="form">
+				<div class="form-group">
+					 
+				</div>
+				<div class="form-group">
+					<label for="addfloor">
+						Add Floor
+					</label>
+					<input class="form-control" id="addfloor" />
+				</div>
+				<div class="form-group">
+					 
+					<label for="file">
+						File input
+					</label>
+					<input type="file" class="form-control-file" id="file" />
+					<p class="help-block">
+                        Input an image along with new floor name to create new map
+					</p>
+				</div>
+				<button type="submit" id="submit" class="btn btn-primary">
+					Submit
+				</button>
+			</form>
+		</div>
+		<div class="col-md-8">
+			<img id="image" alt="Bootstrap Image Preview" src="https://i.redd.it/uo0u67glvlq01.jpg" />
+		</div>
+	</div>
+</div>
+
+</body> 
+</html> 
+
+<script>    
+
+    document.getElementById('submit').addEventListener('click', (event) => {
+        event.preventDefault();
+        const file = document.getElementById('file').files[0];
+        var storageRef = firebase.storage().ref();
+        var ref = storageRef.child(file.name);
+        ref.put(file).then(function(snapshot) {
+        console.log('Uploaded a blob or file!');
+        });
+    });
+
+</script>
