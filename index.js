@@ -77,20 +77,6 @@ app.post('/signIn', async (req, res) => {
   const email = req.body.email;
   const password = req.body.pass;
 
-  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-  .then(function() {
-
-    return firebase.auth().signInWithEmailAndPassword(email, password);
-  })
-  .catch(function(error) {
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    console.log(errorCode);
-    console.log(errorMessage);
-    res.status(400).send('FAIL');
-  });
-
-
   firebase.auth().signInWithEmailAndPassword(email, password).then(success => {
     res.status(200).send('SUCCESS');
   }).catch(function (error) {
@@ -100,10 +86,6 @@ app.post('/signIn', async (req, res) => {
     console.log(errorMessage);
     res.status(400).send('FAIL');
   });
-
-
-
-
 });
 
 app.post('/createAcc', async (req, res) => {
