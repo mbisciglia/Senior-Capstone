@@ -86,6 +86,8 @@ document.getElementById('makeDivs').addEventListener('click', (event) => {
 		var db = firebase.database();
     	var ref = db.ref("images/testAcc/");
 		ref.push({name: floor})
+
+
         });
 
 		ref.getDownloadURL().then(function(url) {
