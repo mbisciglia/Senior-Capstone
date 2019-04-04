@@ -1,23 +1,74 @@
 <!DOCTYPE html>
 <html>
+  <style>
+    #mydiv {
+      position: absolute;
+      z-index: 9;
+      background-color: #f1f1f1;
+      text-align: center;
+	  border: 1px solid #d3d3d3;
+	  resize: both;
+	  overflow: auto;
+      height: 100%;
+      width: 100px;
+      background-color: powderblue;
+    }
+
+    #mydivheader {
+      padding: 10px;
+      cursor: move;
+      z-index: 10;
+      background-color: #2196f3;
+      color: #fff;
+    }
+  </style>
   <body>
-    <select id="floorList"></select>
-    <div
-      id="testContainer"
-      class="testContainer"
-      onclick="showCoords(event)"
-      style="
-position: absolute;
-width: 55vw;
-height:100%;
-"
-    >
-      <img
-        id="img"
-        alt="Bootstrap Image Preview"
-        style="position:absolute"
-        src="https://i.redd.it/uo0u67glvlq01.jpg"
-      />
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2">
+          <select id="floorList" style="margin-bottom: 1em"></select>
+          <button
+            type="button"
+            class="btn btn-success"
+            style="margin-bottom: 1em"
+          >
+            Add Room
+          </button>
+          <button
+            type="button"
+            class="btn btn-success"
+            style="margin-bottom: 1em"
+          >
+            Confirm Room
+          </button>
+        </div>
+        <div class="col-md-10">
+          <div
+            id="testContainer"
+            class="testContainer"
+            onclick="showCoords(event)"
+            style="
+				  position: absolute;
+				  width: 55vw;
+				  height:100%;
+				  "
+          >
+            <img
+              id="img"
+              alt="Bootstrap Image Preview"
+              style="position:absolute"
+              src="https://i.redd.it/uo0u67glvlq01.jpg"
+            />
+
+            <div id="mydiv">
+              <div id="mydivheader">Click here to move</div>
+              <p>Move</p>
+              <p>this</p>
+              <p>DIV</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>
@@ -28,6 +79,52 @@ height:100%;
       loadFloor(this.value);
     });
   })();
+
+  dragElement(document.getElementById("mydiv"));
+
+  function dragElement(elmnt) {
+    var pos1 = 0,
+      pos2 = 0,
+      pos3 = 0,
+      pos4 = 0;
+    if (document.getElementById(elmnt.id + "header")) {
+      /* if present, the header is where you move the DIV from:*/
+      document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+    } else {
+      /* otherwise, move the DIV from anywhere inside the DIV:*/
+      elmnt.onmousedown = dragMouseDown;
+    }
+
+    function dragMouseDown(e) {
+      e = e || window.event;
+      e.preventDefault();
+      // get the mouse cursor position at startup:
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      document.onmouseup = closeDragElement;
+      // call a function whenever the cursor moves:
+      document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+      e = e || window.event;
+      e.preventDefault();
+      // calculate the new cursor position:
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      // set the element's new position:
+      elmnt.style.top = elmnt.offsetTop - pos2 + "px";
+      elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+    }
+
+    function closeDragElement() {
+      /* stop moving when mouse button is released:*/
+      document.onmouseup = null;
+      document.onmousemove = null;
+    }
+  }
 
   function getUserAsync() {
     console.log("calling");
@@ -58,13 +155,10 @@ height:100%;
     // expected output: 'resolved'
   }
 
-
-
-
   function loadFloor(floorName) {
     console.log(`Loading ${floorName}`);
-	var storageRef = firebase.storage().ref();
-	var acc = getCookie("uid");
+    var storageRef = firebase.storage().ref();
+    var acc = getCookie("uid");
     var ref = storageRef.child("images/" + acc + "/" + floorName);
     ref
       .getDownloadURL()
@@ -97,7 +191,7 @@ height:100%;
 
     var isFirst = true;
     return new Promise((resolve, reject) => {
-	var acc = getCookie("uid");
+      var acc = getCookie("uid");
 
       db = firebase.database().ref("images/" + acc + "/");
       db.on("value", function(snapshot) {
