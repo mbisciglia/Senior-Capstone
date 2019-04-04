@@ -33,8 +33,6 @@ app.get('/', async (req, res) => {
   res.render('login');
 });
 
-
-
 app.get('/custom', async (req, res) => {
   res.render('custom');
 });
@@ -73,12 +71,14 @@ app.post('/uploadImage', async (req, res) => {
   });
 });
 
+
+
 app.post('/signIn', async (req, res) => {
   const email = req.body.email;
   const password = req.body.pass;
 
   firebase.auth().signInWithEmailAndPassword(email, password).then(success => {
-    res.status(200).send('SUCCESS');
+    res.status(200).send(success.user.uid);
   }).catch(function (error) {
     var errorCode = error.code;
     var errorMessage = error.message;
@@ -122,19 +122,22 @@ app.post('/forgotPass', async (req, res) => {
 
 
 
-firebase.auth().onAuthStateChanged(function (user) {
+
+app.get('/currentUser', async (req, res) => {
+  var user = firebase.auth().currentUser;
+
+
+
   if (user) {
-    var name = user.displayName;
-    var email = user.email;
-    var photoUrl = user.photoURL;
-    var emailVerified = user.emailVerified;
-    var uid = user.uid;
-    console.log("Current user is: " + email);
+    var data = { "email": user.email, "id": user.uid};
+    console.log("Current user: " + data.email + " with id: " + data.uid);
+    res.status(200).send(data);
+
   } else {
-    // No user is signed in.
+    console.log("No current user.");
+    res.status(400).send('FAIL');
   }
 });
-
 
 app.use((req, res) => {
   res.status(404).send(`<h2>Uh Oh!</h2><p>Sorry ${req.url} cannot be found here</p>`);

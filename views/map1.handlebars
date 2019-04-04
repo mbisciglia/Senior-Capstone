@@ -1,55 +1,68 @@
 <div id="outputBox" class="outputBox">
-    <h1>Room Data</h1>
-    <p id="demo"></p>
+  <h1>Room Data</h1>
+  <p id="demo"></p>
 </div>
 
-<div id="testContainer" class="testContainer" style="
+<div
+  id="testContainer"
+  class="testContainer"
+  style="
 position: relative;
 width: 55vw;
-">
+"
+>
+  <img src="../images/Level1.jpg" , height="5375" width="3575" />
 
-
-    <img src="../images/Level1.jpg", height = 5375 width = 3575/>
-
-<div id="room154" class="room154"onmouseover="printRoomData(154)" onmouseout="goodbyeWorld()"></div>
-<div id="room166" class="room166" onmouseover="printRoomData(166)" onmouseout="goodbyeWorld()"></div>
-
-
-
+  <div
+    id="room154"
+    class="room154"
+    onmouseover="printRoomData(154)"
+    onmouseout="goodbyeWorld()"
+  ></div>
+  <div
+    id="room166"
+    class="room166"
+    onmouseover="printRoomData(166)"
+    onmouseout="goodbyeWorld()"
+  ></div>
 </div>
 
-
-
 <script>
-    var db = firebase.database();
+  var db = firebase.database();
 
-
-    function fetchReading(nodeID){
+  function fetchReading(nodeID) {
     var ref = db.ref(nodeID);
-    
+
     var val;
-    ref.on("value", function(snapshot) {
-    val = snapshot.val();
-    //val = JSON.stringify(val);
-    }, function (errorObject) {
-    console.log("The read failed: " + errorObject.code);
-    });   
+    ref.on(
+      "value",
+      function(snapshot) {
+        val = snapshot.val();
+        //val = JSON.stringify(val);
+      },
+      function(errorObject) {
+        console.log("The read failed: " + errorObject.code);
+      }
+    );
     return val;
-    }
+  }
 
-        function goodbyeWorld(){
-        var div = document.getElementById('demo');
-        div.innerHTML = '';
-    }
+  function goodbyeWorld() {
+    var div = document.getElementById("demo");
+    div.innerHTML = "";
+  }
 
-    function printRoomData(roomID){
-
-        var reading = fetchReading(roomID);
-        document.getElementById("demo").innerHTML = "Room " + roomID + "<br/>"
-        + "Temperature: " + reading.Readings.temp + "<br/>"
-        + "Humidity: " + reading.Readings.humidity + "<br/>";
-    }
-
-
-
+  function printRoomData(roomID) {
+    var reading = fetchReading(roomID);
+    document.getElementById("demo").innerHTML =
+      "Room " +
+      roomID +
+      "<br/>" +
+      "Temperature: " +
+      reading.Readings.temp +
+      "<br/>" +
+      "Humidity: " +
+      reading.Readings.humidity +
+      "<br/>";
+  }
 </script>
