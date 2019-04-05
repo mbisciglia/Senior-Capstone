@@ -2,24 +2,22 @@
 <html>
   <style>
     #mydiv {
-      position: absolute;
+      position: relative;
       z-index: 9;
-      background-color: #f1f1f1;
       text-align: center;
-	  border: 1px solid #d3d3d3;
-	  resize: both;
-	  overflow: auto;
-      height: 100%;
-      width: 100px;
-      background-color: powderblue;
+      border: 3px solid #ebdd17;
+      background-color: orange;
+      resize: both;
+      overflow: auto;
+      opacity: 0.7;
     }
 
     #mydivheader {
       padding: 10px;
       cursor: move;
       z-index: 10;
-      background-color: #2196f3;
-      color: #fff;
+      background-color: rgba(47, 255, 20, 0.5);
+      color: black;
     }
   </style>
   <body>
@@ -29,6 +27,7 @@
           <select id="floorList" style="margin-bottom: 1em"></select>
           <button
             type="button"
+            id="addRoomBTN"
             class="btn btn-success"
             style="margin-bottom: 1em"
           >
@@ -36,17 +35,20 @@
           </button>
           <button
             type="button"
+            id="confRoomBTN"
             class="btn btn-success"
             style="margin-bottom: 1em"
           >
             Confirm Room
           </button>
+          <div>
+            <p>New Div Coordinates</p>
+          </div>
         </div>
         <div class="col-md-10">
           <div
             id="testContainer"
             class="testContainer"
-            onclick="showCoords(event)"
             style="
 				  position: absolute;
 				  width: 55vw;
@@ -60,11 +62,11 @@
               src="https://i.redd.it/uo0u67glvlq01.jpg"
             />
 
-            <div id="mydiv">
+            <div id="mydiv" style="height: 200px; width: 250px; display: none">
               <div id="mydivheader">Click here to move</div>
               <p>Move</p>
-              <p>this</p>
-              <p>DIV</p>
+              <p>&</p>
+              <p>Resize</p>
             </div>
           </div>
         </div>
@@ -80,8 +82,49 @@
     });
   })();
 
-  dragElement(document.getElementById("mydiv"));
+  document.getElementById("addRoomBTN").addEventListener("click", function() {
+    var ele = document.getElementById("mydiv");
+    if (ele.style.display == "block") {
+      console.log("div already created");
+      ele.style.display = "none";
+      ele.style.top = 0;
+      ele.style.left = 0;
+      ele.style.height = "200px";
+      ele.style.width = "250px";
+    } else {
+      console.log("show");
+      ele.style.display = "block";
+    }
+  });
 
+  document.getElementById("confRoomBTN").addEventListener("click", function() {
+    var selectedArea = document.getElementById("mydiv");
+
+    if (selectedArea.style.display == "none") {
+      console.log("Please first select your region with the add room button");
+    } else {
+      var imgDiv = document.getElementById("testContainer");
+      var testDiv = document.createElement("div");
+      imgDiv.appendChild(testDiv);
+
+      testDiv.style.top = selectedArea.style.top;
+      testDiv.style.left = selectedArea.style.left;
+      testDiv.style.height = selectedArea.style.height;
+      testDiv.style.width = selectedArea.style.width;
+      testDiv.style.backgroundColor = "green";
+      testDiv.style.opacity = "0.6";
+	  testDiv.style.position = "absolute";
+	  
+
+      selectedArea.style.display = "none";
+      selectedArea.style.top = 0;
+      selectedArea.style.left = 0;
+      selectedArea.style.height = "200px";
+      selectedArea.style.width = "250px";
+    }
+  });
+
+  dragElement(document.getElementById("mydiv"));
   function dragElement(elmnt) {
     var pos1 = 0,
       pos2 = 0,
@@ -117,6 +160,11 @@
       // set the element's new position:
       elmnt.style.top = elmnt.offsetTop - pos2 + "px";
       elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+      console.log("top: " + elmnt.style.top);
+      console.log("left: " + elmnt.style.left);
+      console.log(
+        "Dimensions: " + elmnt.style.height + " x " + elmnt.style.width
+      );
     }
 
     function closeDragElement() {
@@ -228,12 +276,5 @@
       .catch(err => {
         console.error(err);
       });
-  }
-
-  function showCoords(event) {
-    var x = event.clientX;
-    var y = event.clientY;
-    var coords = "X coords: " + x + ", Y coords: " + y;
-    console.log(coords);
   }
 </script>
