@@ -33,12 +33,35 @@ app.get('/', async (req, res) => {
   res.render('login');
 });
 
-app.get('/custom', async (req, res) => {
-  res.render('custom');
+
+app.get('/display', async (req, res) => {
+  var user = firebase.auth().currentUser;
+  
+  if (user) {
+    res.render('display');
+  } else {
+    res.status(400).send('CAN NOT DISPLAY UNTIL SIGNED IN');
+  }
+});
+
+app.get('/addRoom', async (req, res) => {
+  var user = firebase.auth().currentUser;
+  
+  if (user) {
+    res.render('addRoom');
+  } else {
+    res.status(400).send('CAN NOT ADD ROOM UNTIL SIGNED IN');
+  }
 });
 
 app.get('/addFloor', async (req, res) => {
-  res.render('addFloor');
+  var user = firebase.auth().currentUser;
+
+  if (user) {
+    res.render('addFloor');
+  } else {
+    res.status(400).send('CAN NOT ADD FLOOR UNTIL SIGNED IN');
+  }
 });
 
 app.get('/map1', async (req, res) => {
@@ -58,10 +81,10 @@ app.post('/uploadImage', async (req, res) => {
   var db = firebase.database();
   var ref = db.ref().storageBucket();
 
-  ref.child("images").put(path).then(function(snapshot) {
+  ref.child("images").put(path).then(function (snapshot) {
     console.log('Uploaded a blob or file!');
     res.status(200).send('SUCCESS');
-  }).catch(function (error){
+  }).catch(function (error) {
     // Handle Errors here.
     var errorCode = error.code;
     var errorMessage = error.message;
@@ -129,7 +152,7 @@ app.get('/currentUser', async (req, res) => {
 
 
   if (user) {
-    var data = { "email": user.email, "id": user.uid};
+    var data = { "email": user.email, "id": user.uid };
     console.log("Current user: " + data.email + " with id: " + data.uid);
     res.status(200).send(data);
 

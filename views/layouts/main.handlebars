@@ -1,147 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
 
-    <link rel="shortcut icon" href="" />
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <link rel="shortcut icon" href="" />
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 
-    <!-- Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="/css/styles.css" />
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
+  <link rel="stylesheet" href="/css/styles.css" />
 
-    <title>CS Thesis</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-      crossorigin="anonymous"
-    ></script>
+  <title>CS Thesis</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
 
-    <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyCLg4YBPW6KMlFoF7nFIr1ZtADSPmxMp80",
-        authDomain: "fir-web-43830.firebaseapp.com",
-        databaseURL: "https://fir-web-43830.firebaseio.com",
-        projectId: "fir-web-43830",
-        storageBucket: "fir-web-43830.appspot.com",
-        messagingSenderId: "567827194064"
-      };
-      firebase.initializeApp(config);
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyCLg4YBPW6KMlFoF7nFIr1ZtADSPmxMp80",
+      authDomain: "fir-web-43830.firebaseapp.com",
+      databaseURL: "https://fir-web-43830.firebaseio.com",
+      projectId: "fir-web-43830",
+      storageBucket: "fir-web-43830.appspot.com",
+      messagingSenderId: "567827194064"
+    };
+    firebase.initializeApp(config);
 
-      function getCookie(val) {
-        let all = document.cookie.split("; ");
-        for (let i = 0, l = all.length; i < l; i++) {
-          let kv = all[i].split("=");
-          if (kv[0] == val) {
-            return kv[1];
-          }
+    function getCookie(val) {
+      let all = document.cookie.split("; ");
+      for (let i = 0, l = all.length; i < l; i++) {
+        let kv = all[i].split("=");
+        if (kv[0] == val) {
+          return kv[1];
         }
       }
-    </script>
-  </head>
+    }
+  </script>
+</head>
+<body>
 
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">Navbar</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="http://localhost:53140/"
-              >Home <span class="sr-only">(current)</span></a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              href="https://fir-web-43830.firebaseio.com/"
-              target="_blank"
-              >DataBase</a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              href="http://localhost:53140/addFloor"
-              target="_blank"
-              >Add Floor</a
-            >
-          </li>
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Floor
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="http://localhost:53140/map1"
-                >Floor 1</a
-              >
-              <a class="dropdown-item" href="http://localhost:53140/map2"
-                >Floor 2</a
-              >
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Coming Soon</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+   <a class="navbar-brand" rel="home" href="http://localhost:53140/" >
+        <!--<img src="../images/logo.png" > -->
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <!-- bootstrap container -->
-    <div class="container">
-      <!-- common header -->
-      <h1 class="display-3">Computer Science Thesis</h1>
-
-      {{{body}}}
-
-      <!-- common footer -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="http://localhost:53140/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://fir-web-43830.firebaseio.com/" target="_blank">DataBase</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://localhost:53140/addFloor" target="_blank">Add Floor</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="floorDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Floor
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <!-- <a class="dropdown-item" href="http://localhost:53140/map1">Floor 1</a>
+               <a class="dropdown-item" href="http://localhost:53140/map2">Floor 2</a> -->
+            <div class="dropdown-divider"></div>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Coming Soon</a>
+        </li>
+      </ul>
     </div>
-  </body>
+  </nav>
+
+  <!-- bootstrap container -->
+  <div class="container">
+    <!-- common header -->
+    <h1 class="display-3">Computer Science Thesis</h1>
+
+    {{{body}}}
+
+    <!-- common footer -->
+  </div>
+</body>
+
 </html>

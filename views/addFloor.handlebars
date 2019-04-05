@@ -20,19 +20,13 @@
               <p class="help-block">
                 Input an image along with new floor name to create new map
               </p>
-
-              <p id="doug-help-plz">
-                ask about promises - async calls to db for ret uploaded iamge.
-                also persistance and how to deal with users correctly. Might
-                include sending email and pass to each page to resign in?
-              </p>
             </div>
             <button type="submit" id="submit" class="btn btn-primary">
               Submit
             </button>
             <br />
             <br />
-            <button type="submit" id="makeDivs" class="btn btn-primary">
+            <button type="submit" id="addRooms" class="btn btn-primary">
               Add Rooms
             </button>
             <p>
@@ -82,9 +76,9 @@
 </html>
 
 <script>
-  document.getElementById("makeDivs").addEventListener("click", event => {
+  document.getElementById("addRooms").addEventListener("click", event => {
     event.preventDefault();
-    window.location = "custom";
+    window.location = "addRoom";
   });
 
   document.getElementById("submit").addEventListener("click", event => {
@@ -103,7 +97,7 @@
     var acc = getCookie("uid");
 
     var storageRef = firebase.storage().ref();
-    var ref = storageRef.child("images/" + acc + "/" + floor);
+    var ref = storageRef.child(acc + "/" + floor);
     ref
       .put(file)
       .then(snapshot => {
@@ -115,7 +109,7 @@
         );
 
         var db = firebase.database();
-        var dbref = db.ref("images/" + acc + "/");
+        var dbref = db.ref(acc + "/images/" + "floors/");
         dbref.push({ name: floor });
 
         return downloadURL;
