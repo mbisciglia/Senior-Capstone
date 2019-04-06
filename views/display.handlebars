@@ -21,13 +21,26 @@
     }
 </style>
 
+
+
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-2">
-                <select id="floorList" style="margin-bottom: 1em"></select>
+            <div class="col-md-4">
+                <div class="dropdown">
+
+                    <select id="floorList" style="margin-bottom: 1em"></select>
+
+                </div>
+                <div class="jumbotron">
+                    <h2 id="room">
+                    </h2>
+                    <p id="textDisplay">
+                    </p>
+
+                </div>
             </div>
-            <div class="col-md-10">
+            <div class="col-md-8">
                 <div id="testContainer" class="testContainer" style="
 				  position: absolute;
 				  width: 55vw;
@@ -40,8 +53,10 @@
             </div>
         </div>
     </div>
-    </div>
 </body>
+
+
+
 
 </html>
 
@@ -50,46 +65,120 @@
         document.getElementById("floorList").addEventListener("change", function () {
             loadFloor(this.value);
         });
+
+
     })();
 
 
+    //roomOBJ = { room: room, top: top, left: left, height: height, width: width }
+    function recreateDiv(roomOBJ) {
+        var imgDiv = document.getElementById("testContainer");
+        var testDiv = document.createElement("div");
+        imgDiv.appendChild(testDiv);
 
-    function recreateDivs() {
-        //var imgDiv = document.getElementById("testContainer");
-        //var testDiv = document.createElement("div");
-        //imgDiv.appendChild(testDiv);
-/*
-        testDiv.style.top = selectedArea.style.top;
-        testDiv.style.left = selectedArea.style.left;
-        testDiv.style.height = selectedArea.style.height;
-        testDiv.style.width = selectedArea.style.width;
+        var t = document.createTextNode(roomOBJ.room);
+
+        testDiv.appendChild(t);
+        testDiv.style.textAlign = "center";
+        testDiv.style.verticalAlign = "middle";
+        testDiv.style.lineHeight = roomOBJ.height;
+        testDiv.style.fontSize = "200%";
+        testDiv.style.color = "yellow";
+
+        testDiv.style.top = roomOBJ.top;
+        testDiv.style.left = roomOBJ.left;
+        testDiv.style.height = roomOBJ.height;
+        testDiv.style.width = roomOBJ.width;
         testDiv.style.backgroundColor = "green";
         testDiv.style.opacity = "0.6";
         testDiv.style.position = "absolute";
 
+        testDiv.onmouseover = function () {
+            console.log('hello');
+            fetchReadings(roomOBJ.room)
+                .then(roomData => {
+                    console.log(roomData);
+                    document.getElementById("room").innerHTML = roomOBJ.room;
+                    document.getElementById("textDisplay").innerHTML =
+                        "Temperature: " +
+                        roomData.temp +
+                        "<br/>" +
+                        "Humidity: " +
+                        roomData.humidity +
+                        "<br/>";
 
-        selectedArea.style.display = "none";
-        selectedArea.style.top = 0;
-        selectedArea.style.left = 0;
-        selectedArea.style.height = "200px";
-        selectedArea.style.width = "250px";
+                })
+                .catch(err => {
+                    console.error(err);
+                });
 
-
-        var acc = getCookie("uid");
-        var floor = document.getElementById("floorList").value;
-        var top = testDiv.style.top;
-        var left = testDiv.style.left;
-        var height = testDiv.style.height;
-        var width = testDiv.style.width;
-
-        var db = firebase.database();
-        var dbref = db.ref(acc + "/images/" + "floorData/" + floor + "/");
-        dbref.push({ top: top, left: left, height: height, width: width });
-*/
-
-        //var db = firebase.database();
-        //var dbref = db.ref(acc + )
+        }
     }
+
+
+
+
+    function fetchReadings(roomName) {
+
+        return new Promise((resolve, reject) => {
+            var acc = getCookie("uid");
+            var floor = document.getElementById("floorList").value;
+            var data;
+
+            console.log(acc + "/" + floor + "/" + roomName);
+
+            db = firebase.database().ref(acc + "/" + floor + "/" + roomName);
+            db.on("value", function (snapshot) {
+                data = snapshot.val()
+                resolve(data.Readings);
+            });
+        });
+    }
+
+
+    function fetchRooms() {
+        var rooms = [];
+
+        return new Promise((resolve, reject) => {
+            var acc = getCookie("uid");
+            var floor = document.getElementById("floorList").value;
+            console.log("Floor: " + floor);
+
+
+
+
+            db = firebase.database().ref(acc + "/images/" + "floorData/" + floor + "/");
+            db.on("value", function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var childData = childSnapshot.val();
+
+                    rooms.push(childData);
+                });
+
+                resolve(rooms);
+            });
+        });
+    }
+
+
+    function loadRooms() {
+
+        fetchRooms()
+            .then(rooms => {
+                console.log("Promise result", rooms);
+                console.log(rooms.length);
+
+                for (var i = 0, l = rooms.length; i < l; i++) {
+                    console.log(i + ": " + rooms[i].room);
+                    recreateDiv(rooms[i]);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
+
+
 
 
 
@@ -131,7 +220,7 @@
         return new Promise((resolve, reject) => {
             var acc = getCookie("uid");
 
-            db = firebase.database().ref(acc + "/images/" + "floors/");
+            db = firebase.database().ref(acc + "/images/" + "floors");
             db.on("value", function (snapshot) {
                 snapshot.forEach(function (childSnapshot) {
                     var childData = childSnapshot.val();
@@ -156,6 +245,7 @@
 
         fetchNames()
             .then(names => {
+
                 console.log("Promise result", names);
                 for (var i = 0, l = names.length; i < l; i++) {
                     var option = document.createElement("option");
@@ -164,6 +254,9 @@
                     //list2.add(option);
                     //console.log("bazzanngga");
                 }
+
+                loadRooms();
+
             })
             .catch(err => {
                 console.error(err);

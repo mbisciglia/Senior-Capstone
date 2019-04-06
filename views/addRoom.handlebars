@@ -78,10 +78,10 @@
   })();
 
 
-document.getElementById("confFloorBTN").addEventListener("click", function () {
+  document.getElementById("confFloorBTN").addEventListener("click", function () {
     window.location = "display"
 
-});
+  });
 
   document.getElementById("addRoomBTN").addEventListener("click", function () {
     var ele = document.getElementById("mydiv");
@@ -100,19 +100,32 @@ document.getElementById("confFloorBTN").addEventListener("click", function () {
 
   document.getElementById("confRoomBTN").addEventListener("click", function () {
     var selectedArea = document.getElementById("mydiv");
-    var roomNumInput = document.getElementById("roomNum");
+    var roomNum = document.getElementById("roomNum");
 
 
     if (selectedArea.style.display == "none") {
       console.log("Please first select your region with the add room button");
     }
-    else if (roomNumInput.value == "") {
+    else if (roomNum.value == "") {
       console.log("Please first enter in a room number");
     }
     else {
       var imgDiv = document.getElementById("testContainer");
       var testDiv = document.createElement("div");
       imgDiv.appendChild(testDiv);
+
+      console.log(roomNum.value);
+      var t = document.createTextNode(roomNum.value);
+
+      testDiv.appendChild(t);
+      testDiv.style.textAlign = "center";
+      testDiv.style.verticalAlign = "middle";
+      testDiv.style.lineHeight = selectedArea.style.height;
+      testDiv.style.fontSize = "200%";
+      testDiv.style.color = "yellow";
+
+
+
 
       testDiv.style.top = selectedArea.style.top;
       testDiv.style.left = selectedArea.style.left;
@@ -131,6 +144,9 @@ document.getElementById("confFloorBTN").addEventListener("click", function () {
 
 
       var acc = getCookie("uid");
+      var room = roomNum.value;
+      roomNum.value = "";
+
       var floor = document.getElementById("floorList").value;
       var top = testDiv.style.top;
       var left = testDiv.style.left;
@@ -139,7 +155,7 @@ document.getElementById("confFloorBTN").addEventListener("click", function () {
 
       var db = firebase.database();
       var dbref = db.ref(acc + "/images/" + "floorData/" + floor + "/");
-      dbref.push({ top: top, left: left, height: height, width: width });
+      dbref.push({ room: room, top: top, left: left, height: height, width: width });
     }
   });
 
