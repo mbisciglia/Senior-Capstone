@@ -55,10 +55,10 @@
 
 
     function recreateDivs() {
-        var imgDiv = document.getElementById("testContainer");
-        var testDiv = document.createElement("div");
-        imgDiv.appendChild(testDiv);
-
+        //var imgDiv = document.getElementById("testContainer");
+        //var testDiv = document.createElement("div");
+        //imgDiv.appendChild(testDiv);
+/*
         testDiv.style.top = selectedArea.style.top;
         testDiv.style.left = selectedArea.style.left;
         testDiv.style.height = selectedArea.style.height;
@@ -85,7 +85,10 @@
         var db = firebase.database();
         var dbref = db.ref(acc + "/images/" + "floorData/" + floor + "/");
         dbref.push({ top: top, left: left, height: height, width: width });
+*/
 
+        //var db = firebase.database();
+        //var dbref = db.ref(acc + )
     }
 
 
