@@ -45,14 +45,23 @@ app.get('/display', async (req, res) => {
 });
 
 app.get('/addRoom', async (req, res) => {
-
+  var user = firebase.auth().currentUser;
+  
+  if (user) {
     res.render('addRoom');
+  } else {
+    res.status(400).send('CAN NOT ADD ROOM UNTIL SIGNED IN');
+  }
 
 });
 
 app.get('/addFloor', async (req, res) => {
-
+  var user = firebase.auth().currentUser;
+  if (user) {
     res.render('addFloor');
+  } else {
+    res.status(400).send('CAN NOT ADD FLOOR UNTIL SIGNED IN');
+  };
 });
 
 app.get('/map1', async (req, res) => {

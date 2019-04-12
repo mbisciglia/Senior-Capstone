@@ -1,277 +1,327 @@
 <!DOCTYPE html>
 <html>
-<style>
-body {font-family: Arial, Helvetica, sans-serif;}
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 25%; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
+    /* The Modal (background) */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 25%; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0, 0, 0); /* Fallback color */
+      background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    }
 
-/* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 100%;
-}
+    /* Modal Content */
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 100%;
+    }
 
-/* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
+    /* The Close Button */
+    .close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
 
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
-</style>    
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
 
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
+  <link
+    href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+    rel="stylesheet"
+    id="bootstrap-css"
+  />
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!------ Include the above in your HEAD tag ---------->
 
-<body>
-
+  <body>
     <div class="container login-container">
-        <div class="row">
-            <div class="col-md-6 login-form-1">
-                <h3>Sign In</h3>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="SIemail" placeholder="Your Email *" value="" />
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" id="SIpass" placeholder="Your Password *" value="" />
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="btnSubmit" id="SIsubmit" value="Login" />
-                </div>
-                <div class="form-group">
-                    <a href="#" class="btnForgetPwd" id="forgot">Forget Password?</a>
-                </div>
-
-            </div>
-            <div class="col-md-6 login-form-2">
-                <h3>Create Account</h3>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="CAemail" placeholder="Your Email *" value="" />
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" id="CApass" placeholder="Your Password *" value="" />
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="btnSubmit" id="CAsubmit" value="Create" />
-                </div>
-                </form>
-            </div>
+      <div class="row">
+        <div class="col-md-6 login-form-1">
+          <h3>Sign In</h3>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="SIemail"
+              placeholder="Your Email *"
+              value=""
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="password"
+              class="form-control"
+              id="SIpass"
+              placeholder="Your Password *"
+              value=""
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="submit"
+              class="btnSubmit"
+              id="SIsubmit"
+              value="Login"
+            />
+          </div>
+          <div class="form-group">
+            <a href="#" class="btnForgetPwd" id="forgot">Forget Password?</a>
+          </div>
         </div>
+        <div class="col-md-6 login-form-2">
+          <h3>Create Account</h3>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="CAemail"
+              placeholder="Your Email *"
+              value=""
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="password"
+              class="form-control"
+              id="CApass"
+              placeholder="Your Password *"
+              value=""
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="submit"
+              class="btnSubmit"
+              id="CAsubmit"
+              value="Create"
+            />
+          </div>
+        </div>
+      </div>
     </div>
-</body>
+  </body>
 
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <p id="errorBox">error msg</p>
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p id="errorBox">error msg</p>
+    </div>
   </div>
-
-</div>
-
 </html>
 
 <script>
-    var firebase = firebase.database();
+  var firebase = firebase.database();
 
+  document.getElementById("SIsubmit").addEventListener("click", event => {
+    event.preventDefault();
+    const email = document.getElementById("SIemail").value;
+    const password = document.getElementById("SIpass").value;
 
+    const userData = {
+      email: email,
+      pass: password
+    };
+    const fetchConfigData = {
+      method: "POST",
+      body: JSON.stringify(userData),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
 
-    document.getElementById('SIsubmit').addEventListener('click', (event) => {
-        event.preventDefault();
-        const email = document.getElementById('SIemail').value;
-        const password = document.getElementById('SIpass').value;
+    const response = fetch("/signIn", fetchConfigData)
+      .then(resp => {
+        if (resp.status !== 200) {
+          console.log("resp.status: " + resp.status);
+          // Get the modal
+          var modal = document.getElementById("myModal");
+          // Get the <span> element that closes the modal
+          var span = document.getElementsByClassName("close")[0];
+          var content = document.getElementById("errorBox");
 
-        const userData = {
-            email: email,
-            pass: password
-        };
-        const fetchConfigData = {
-            method: "POST",
-            body: JSON.stringify(userData),
-            headers: {
-                "Content-Type": "application/json"
+          content.innerHTML = "Incorrect Email or password.";
+          modal.style.display = "block";
+          // When the user clicks on <span> (x), close the modal
+          span.onclick = function() {
+            modal.style.display = "none";
+          };
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function(event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
             }
-        };
+          };
+          return resp.status;
+        } else {
+          return resp.text();
+        }
+      })
+      .then(respBody => {
+        if (respBody == 400) {
+          console.log(respBody);
+        } else {
+          document.cookie = "uid=" + respBody;
+          console.log(respBody);
+          window.location = "addFloor";
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  });
 
+  document.getElementById("CAsubmit").addEventListener("click", event => {
+    event.preventDefault();
+    const email = document.getElementById("CAemail").value;
+    const password = document.getElementById("CApass").value;
+    const userData = {
+      email: email,
+      pass: password
+    };
+    const fetchConfigData = {
+      method: "POST",
+      body: JSON.stringify(userData),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
 
-        const response = fetch("/signIn", fetchConfigData).then(resp => {
-            if(resp.status !== 200){
-                console.log("resp.status: " + resp.status);
-                // Get the modal
-                var modal = document.getElementById('myModal');
-                // Get the <span> element that closes the modal
-                var span = document.getElementsByClassName("close")[0];
-                var content = document.getElementById("errorBox");
+    const response = fetch("/createAcc", fetchConfigData)
+      .then(resp => {
+        if (resp.status == 200) {
+          // Get the modal
+          var modal = document.getElementById("myModal");
+          // Get the <span> element that closes the modal
+          var span = document.getElementsByClassName("close")[0];
+          var content = document.getElementById("errorBox");
 
-                content.innerHTML = "Incorrect Email or password."; 
-                modal.style.display = "block";
-                // When the user clicks on <span> (x), close the modal
-                span.onclick = function() {
-                  modal.style.display = "none";
-                }
-                // When the user clicks anywhere outside of the modal, close it
-                window.onclick = function(event) {
-                  if (event.target == modal) {
-                    modal.style.display = "none";
-                  }
-                }
-            } else {
-                return resp.text();
+          content.innerHTML =
+            "Account has been created, now you may sign in.";
+          modal.style.display = "block";
+          // When the user clicks on <span> (x), close the modal
+          span.onclick = function() {
+            modal.style.display = "none";
+          };
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function(event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
             }
-        }).then(respBody => {
-                document.cookie = "uid="+respBody;
-                window.location = "addFloor";
-            //console.log(respBody);
-        }).catch(err => {
-            console.error(err);
-        });
-    });
+          };
+        } else {
+          console.log("resp.status: " + resp.status);
+          // Get the modal
+          var modal = document.getElementById("myModal");
+          // Get the <span> element that closes the modal
+          var span = document.getElementsByClassName("close")[0];
+          var content = document.getElementById("errorBox");
 
-
-
-
-    document.getElementById('CAsubmit').addEventListener('click', (event) => {
-        event.preventDefault();
-        const email = document.getElementById('CAemail').value;
-        const password = document.getElementById('CApass').value;
-            const userData = {
-                email: email,
-                pass: password
-            };
-            const fetchConfigData = {
-                method: "POST",
-                body: JSON.stringify(userData),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            };
-
-            const response = fetch("/createAcc", fetchConfigData).then(resp => {
-            if(resp.status == 200)
-            {
-                window.location = "";
+          content.innerHTML =
+            "Could not create Acc, make sure that email is valid.";
+          modal.style.display = "block";
+          // When the user clicks on <span> (x), close the modal
+          span.onclick = function() {
+            modal.style.display = "none";
+          };
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function(event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
             }
-            else
-            {
-                console.log("resp.status: " + resp.status);
-                // Get the modal
-                var modal = document.getElementById('myModal');
-                // Get the <span> element that closes the modal
-                var span = document.getElementsByClassName("close")[0];
-                var content = document.getElementById("errorBox");
+          };
+        }
+        return resp.text();
+      })
+      .then(respBody => {
+        console.log(respBody);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  });
 
-                content.innerHTML = "Could not create Acc, make sure that email is valid."; 
-                modal.style.display = "block";
-                // When the user clicks on <span> (x), close the modal
-                span.onclick = function() {
-                  modal.style.display = "none";
-                }
-                // When the user clicks anywhere outside of the modal, close it
-                window.onclick = function(event) {
-                  if (event.target == modal) {
-                    modal.style.display = "none";
-                  }
-                }
+  document.getElementById("forgot").addEventListener("click", event => {
+    event.preventDefault();
+    const email = document.getElementById("SIemail").value;
+    var modal = document.getElementById("myModal");
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    var content = document.getElementById("errorBox");
+
+    const userData = {
+      email: email
+    };
+    const fetchConfigData = {
+      method: "POST",
+      body: JSON.stringify(userData),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+    const response = fetch("/forgotPass", fetchConfigData)
+      .then(resp => {
+        if (resp.status == 200) {
+          content.innerHTML = "Password Reset has been sent to your email.";
+          modal.style.display = "block";
+          // When the user clicks on <span> (x), close the modal
+          span.onclick = function() {
+            modal.style.display = "none";
+          };
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function(event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
             }
-            return resp.text();
+          };
+        } else {
+          console.log("resp.status: " + resp.status);
+          // Get the modal
 
-        }).then(respBody => {
-            console.log(respBody);
-        }).catch(err => {
-            console.error(err);
-        });
-    });
-
-    document.getElementById('forgot').addEventListener('click', (event) => {
-        event.preventDefault();
-        const email = document.getElementById('SIemail').value;
-        var modal = document.getElementById('myModal');
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-        var content = document.getElementById("errorBox");
-     
-            const userData = {
-                email: email
-            };
-            const fetchConfigData = {
-                method: "POST",
-                body: JSON.stringify(userData),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            };
-
-
-
-            const response = fetch("/forgotPass", fetchConfigData).then(resp => {
-            if(resp.status == 200)
-            {
-                content.innerHTML = "Password Reset has been sent to your email."; 
-                modal.style.display = "block";
-                // When the user clicks on <span> (x), close the modal
-                span.onclick = function() {
-                  modal.style.display = "none";
-                }
-                // When the user clicks anywhere outside of the modal, close it
-                window.onclick = function(event) {
-                  if (event.target == modal) {
-                    modal.style.display = "none";
-                  }
-                }
+          content.innerHTML =
+            "Issue with sending forgoten password email, make sure email is valid.";
+          modal.style.display = "block";
+          // When the user clicks on <span> (x), close the modal
+          span.onclick = function() {
+            modal.style.display = "none";
+          };
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function(event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
             }
-            else
-            {
-                console.log("resp.status: " + resp.status);
-                // Get the modal
-
-
-                content.innerHTML = "Issue with sending forgoten password email, make sure email is valid."; 
-                modal.style.display = "block";
-                // When the user clicks on <span> (x), close the modal
-                span.onclick = function() {
-                  modal.style.display = "none";
-                }
-                // When the user clicks anywhere outside of the modal, close it
-                window.onclick = function(event) {
-                  if (event.target == modal) {
-                    modal.style.display = "none";
-                  }
-                }
-            }
-            return resp.text();
-        }).then(respBody => {
-            console.log(respBody);
-        }).catch(err => {
-            console.error(err);
-        });
-    });
-
-
+          };
+        }
+        return resp.text();
+      })
+      .then(respBody => {
+        console.log(respBody);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  });
 </script>

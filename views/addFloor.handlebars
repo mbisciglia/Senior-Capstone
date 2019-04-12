@@ -40,6 +40,7 @@
             id="image"
             alt="Bootstrap Image Preview"
             src="https://i.redd.it/uo0u67glvlq01.jpg"
+            onclick=""
           />
         </div>
       </div>
@@ -81,6 +82,11 @@
     window.location = "addRoom";
   });
 
+
+
+  function uploadImage(){
+
+  }
   document.getElementById("submit").addEventListener("click", event => {
     event.preventDefault();
     var file = document.getElementById("file").files[0];
@@ -90,8 +96,6 @@
       return;
     }
 
-    console.log(file);
-    console.log(floor);
     file = new File([file], floor, { type: "image/png" });
 
     var acc = getCookie("uid");
@@ -115,7 +119,6 @@
         return downloadURL;
       })
       .then(myURL => {
-        console.log("I finally fucking made it boys");
         var img = document.getElementById("image");
         img.src = myURL;
 
