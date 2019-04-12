@@ -35,9 +35,9 @@
             </p>
           </form>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8" id="mapContainer">
           <img
-            id="image"
+            id="mapImg"
             alt="Bootstrap Image Preview"
             src="https://i.redd.it/uo0u67glvlq01.jpg"
             onclick=""
@@ -119,7 +119,7 @@
         return downloadURL;
       })
       .then(myURL => {
-        var img = document.getElementById("image");
+        var img = document.getElementById("mapImg");
         img.src = myURL;
 
         document.getElementById("myAlert").style.display = "block";

@@ -31,19 +31,10 @@
           <div class="jumbotron" id="current-room-info"></div>
         </div>
         <div class="col-md-8">
-          <div
-            id="testContainer"
-            class="testContainer"
-            style="
-				  position: absolute;
-				  width: 55vw;
-				  height:100%;
-				  "
-          >
+          <div id="mapContainer">
             <img
-              id="img"
+              id="mapImg"
               alt="Bootstrap Image Preview"
-              style="position:absolute"
               src="https://i.redd.it/uo0u67glvlq01.jpg"
             />
           </div>
@@ -87,7 +78,7 @@
 
   //roomOBJ = { room: room, top: top, left: left, height: height, width: width }
   function recreateDiv(roomOBJ) {
-    var imgDiv = document.getElementById("testContainer");
+    var imgDiv = document.getElementById("mapContainer");
     var roomDiv = document.createElement("div");
 
     roomDiv.dataset.roomNumber = roomOBJ.room;
@@ -105,7 +96,7 @@
   }
 
   function clearCurrentRooms() {
-    var rooms = document.querySelectorAll("#testContainer .room-div");
+    var rooms = document.querySelectorAll("#mapContainer .room-div");
 
     rooms.forEach(r => r.remove());
   }
@@ -189,14 +180,13 @@
         loadRooms();
 
         // Or inserted into an <img> element:
-        var img = document.getElementById("img");
+        var img = document.getElementById("mapImg");
         img.src = url;
       })
       .catch(function(error) {
         console.log(error);
         console.log("there was an error getting images");
       });
-
   }
 
   loadFloorNames();

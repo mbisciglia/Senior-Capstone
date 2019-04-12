@@ -1,89 +1,97 @@
 <!DOCTYPE html>
 <html>
-<style>
-  #mydiv {
-    position: relative;
-    z-index: 9;
-    text-align: center;
-    border: 3px solid #ebdd17;
-    background-color: orange;
-    resize: both;
-    overflow: auto;
-    opacity: 0.7;
-  }
+  <style>
+    #mydiv {
+      position: relative;
+      z-index: 9;
+      text-align: center;
+      border: 3px solid #ebdd17;
+      background-color: orange;
+      resize: both;
+      overflow: auto;
+      opacity: 0.7;
+    }
 
-  #mydivheader {
-    padding: 10px;
-    cursor: move;
-    z-index: 10;
-    background-color: rgba(47, 255, 20, 0.5);
-    color: black;
-  }
-</style>
+    #mydivheader {
+      padding: 10px;
+      cursor: move;
+      z-index: 10;
+      background-color: rgba(47, 255, 20, 0.5);
+      color: black;
+    }
+  </style>
 
-<body>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-2">
-        <select id="floorList" style="margin-bottom: 1em"></select>
-        <button type="button" id="addRoomBTN" class="btn btn-success" style="margin-bottom: 1em">
-          Add Room
-        </button>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2">
+          <select id="floorList" style="margin-bottom: 1em"></select>
+          <button
+            type="button"
+            id="addRoomBTN"
+            class="btn btn-success"
+            style="margin-bottom: 1em"
+          >
+            Add Room
+          </button>
 
+          <div class="form-group">
+            <label for="addfloor">
+              Room Number
+            </label>
+            <input class="form-control" id="roomNum" />
+          </div>
 
-        <div class="form-group">
-          <label for="addfloor">
-            Room Number
-          </label>
-          <input class="form-control" id="roomNum" />
+          <button
+            type="button"
+            id="confRoomBTN"
+            class="btn btn-success"
+            style="margin-bottom: 1em"
+          >
+            Confirm Room
+          </button>
+          <button
+            type="button"
+            id="confFloorBTN"
+            class="btn btn-success"
+            style="margin-bottom: 1em"
+          >
+            Confirm Floor
+          </button>
         </div>
+        <div class="col-md-10">
+          <div id="mapContainer">
+            <img
+              id="mapImg"
+              alt="Bootstrap Image Preview"
+              src="https://i.redd.it/uo0u67glvlq01.jpg"
+            />
 
-
-
-        <button type="button" id="confRoomBTN" class="btn btn-success" style="margin-bottom: 1em">
-          Confirm Room
-        </button>
-        <button type="button" id="confFloorBTN" class="btn btn-success" style="margin-bottom: 1em">
-          Confirm Floor
-        </button>
-      </div>
-      <div class="col-md-10">
-        <div id="testContainer" class="testContainer" style="
-				  position: absolute;
-				  width: 55vw;
-				  height:100%;
-				  ">
-          <img id="img" alt="Bootstrap Image Preview" style="position:absolute"
-            src="https://i.redd.it/uo0u67glvlq01.jpg" />
-
-          <div id="mydiv" style="height: 200px; width: 250px; display: none">
-            <div id="mydivheader">Click here to move</div>
-            <p>Move</p>
-            <p>&</p>
-            <p>Resize</p>
+            <div id="mydiv" style="height: 200px; width: 250px; display: none">
+              <div id="mydivheader">Click here to move</div>
+              <p>Move</p>
+              <p>&</p>
+              <p>Resize</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
-
+  </body>
 </html>
 
 <script>
   (() => {
-    document.getElementById("floorList").addEventListener("change", function () {
+    document.getElementById("floorList").addEventListener("change", function() {
       loadFloor(this.value);
     });
   })();
 
-
-  document.getElementById("confFloorBTN").addEventListener("click", function () {
-    window.location = "display"
-
+  document.getElementById("confFloorBTN").addEventListener("click", function() {
+    window.location = "display";
   });
 
-  document.getElementById("addRoomBTN").addEventListener("click", function () {
+  document.getElementById("addRoomBTN").addEventListener("click", function() {
     var ele = document.getElementById("mydiv");
     if (ele.style.display == "block") {
       console.log("div already created");
@@ -97,19 +105,16 @@
     }
   });
 
-  document.getElementById("confRoomBTN").addEventListener("click", function () {
+  document.getElementById("confRoomBTN").addEventListener("click", function() {
     var selectedArea = document.getElementById("mydiv");
     var roomNum = document.getElementById("roomNum");
 
-
     if (selectedArea.style.display == "none") {
       alert("Please first select your region with the add room button");
-    }
-    else if (roomNum.value == "") {
+    } else if (roomNum.value == "") {
       alert("Please first enter in a room number");
-    }
-    else {
-      var imgDiv = document.getElementById("testContainer");
+    } else {
+      var imgDiv = document.getElementById("mapContainer");
       var testDiv = document.createElement("div");
       imgDiv.appendChild(testDiv);
 
@@ -122,9 +127,6 @@
       testDiv.style.fontSize = "200%";
       testDiv.style.color = "yellow";
 
-
-
-
       testDiv.style.top = selectedArea.style.top;
       testDiv.style.left = selectedArea.style.left;
       testDiv.style.height = selectedArea.style.height;
@@ -133,13 +135,11 @@
       testDiv.style.opacity = "0.6";
       testDiv.style.position = "absolute";
 
-
       selectedArea.style.display = "none";
       selectedArea.style.top = 0;
       selectedArea.style.left = 0;
       selectedArea.style.height = "200px";
       selectedArea.style.width = "250px";
-
 
       var acc = getCookie("uid");
       var room = roomNum.value;
@@ -153,7 +153,13 @@
 
       var db = firebase.database();
       var dbref = db.ref(acc + "/images/" + "floorData/" + floor + "/");
-      dbref.push({ room: room, top: top, left: left, height: height, width: width });
+      dbref.push({
+        room: room,
+        top: top,
+        left: left,
+        height: height,
+        width: width
+      });
     }
   });
 
@@ -222,7 +228,7 @@
             reject(resp);
           }
         })
-        .then(function (data) {
+        .then(function(data) {
           console.log(data);
           currUser = data;
 
@@ -242,23 +248,23 @@
     var ref = storageRef.child(acc + "/" + floorName);
     ref
       .getDownloadURL()
-      .then(function (url) {
+      .then(function(url) {
         // `url` is the download URL for 'images/stars.jpg'
 
         // This can be downloaded directly:
         var xhr = new XMLHttpRequest();
         xhr.responseType = "blob";
-        xhr.onload = function (event) {
+        xhr.onload = function(event) {
           var blob = xhr.response;
         };
         xhr.open("GET", url);
         xhr.send();
 
         // Or inserted into an <img> element:
-        var img = document.getElementById("img");
+        var img = document.getElementById("mapImg");
         img.src = url;
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
         console.log("there was an error getting images");
       });
@@ -274,8 +280,8 @@
       var acc = getCookie("uid");
 
       db = firebase.database().ref(acc + "/images/" + "floors/");
-      db.on("value", function (snapshot) {
-        snapshot.forEach(function (childSnapshot) {
+      db.on("value", function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
           var childData = childSnapshot.val();
 
           if (isFirst) {
