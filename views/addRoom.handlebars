@@ -12,13 +12,6 @@
       opacity: 0.7;
     }
 
-    #mydivheader {
-      padding: 10px;
-      cursor: move;
-      z-index: 10;
-      background-color: rgba(47, 255, 20, 0.5);
-      color: black;
-    }
   </style>
 
   <body>
@@ -68,7 +61,6 @@
             />
 
             <div id="addRoomDiv">
-              <div id="mydivheader">Click here to move</div>
             </div>
           </div>
         </div>
@@ -77,11 +69,18 @@
   </body>
 </html>
 
+<script src="/js/dragElement.js"></script>
 <script>
+	var dragger = null;
   (() => {
     document.getElementById("floorList").addEventListener("change", function() {
       loadFloor(this.value);
     });
+
+    dragger = new DragElement(
+      document.getElementById("addRoomDiv"),
+      document.getElementById("mapImg")
+    );
   })();
 
   document.getElementById("confFloorBTN").addEventListener("click", function() {
@@ -111,115 +110,39 @@
     } else if (roomNum.value == "") {
       alert("Please first enter in a room number");
     } else {
-      //TODO: make look like Display
-      var imgDiv = document.getElementById("mapContainer");
-      var mapDiv = document.createElement("div");
-      imgDiv.appendChild(mapDiv);
-
-      var t = document.createTextNode(roomNum.value);
-
-      mapDiv.appendChild(t);
-      mapDiv.style.textAlign = "center";
-      mapDiv.style.verticalAlign = "middle";
-      mapDiv.style.lineHeight = selectedArea.style.height;
-      mapDiv.style.fontSize = "200%";
-      mapDiv.style.color = "yellow";
-
-      mapDiv.style.top = selectedArea.style.top;
-      mapDiv.style.left = selectedArea.style.left;
-      mapDiv.style.height = selectedArea.style.height;
-      mapDiv.style.width = selectedArea.style.width;
-      mapDiv.style.backgroundColor = "green";
-      mapDiv.style.opacity = "0.6";
-      mapDiv.style.position = "absolute";
-
-      selectedArea.style.display = "none";
-      selectedArea.style.top = 0;
-      selectedArea.style.left = 0;
-      selectedArea.style.height = "200px";
-      selectedArea.style.width = "250px";
-
+			var roomData = dragger.getPercentageDimensions();
+      
       var acc = getCookie("uid");
       var room = roomNum.value;
       roomNum.value = "";
 
       var floor = document.getElementById("floorList").value;
-      var top = mapDiv.style.top;
-      var left = mapDiv.style.left;
-      var height = mapDiv.style.height;
-      var width = mapDiv.style.width;
+
+			roomData.room = room;
+
+			addLocalRoomToMap(roomData,document.getElementById("mapContainer"));
 
       var db = firebase.database();
       var dbref = db.ref(acc + "/images/" + "floorData/" + floor + "/");
-      dbref.push({
-        room: room,
-        top: top,
-        left: left,
-        height: height,
-        width: width
-      });
+      dbref.push(roomData);
+
+			dragger.reset();
     }
   });
 
-  setupDragElement(document.getElementById("addRoomDiv"));
-  function setupDragElement(element) {
-    var parentDimens = undefined;
-    var thisEl = element;
-    parentDimens = document.getElementById("mapImg").getBoundingClientRect();
+	function addLocalRoomToMap(roomData, mapContainer){
+		var roomDiv = document.createElement("div");
+		roomDiv.classList.add('room-div');
 
+		roomDiv.dataset.roomNumber = roomData.room;
 
-    if (document.getElementById(element.id + "header")) {
-      document.getElementById(element.id + "header").onmousedown = dragMouseDown;
-    }
-    else{
-      element.onmousedown = dragMouseDown;
-    }
+	 roomDiv.style.top = roomData.top;
+      roomDiv.style.left = roomData.left;
+      roomDiv.style.height = roomData.height;
+      roomDiv.style.width = roomData.width;
 
-
-    function dragMouseDown(e)
-    {
-      e = e || window.event;
-      e.preventDefault();
-      // get the mouse cursor position at startup:
-      console.log("EVENT", e);
-      //elementDrag(e);
-      document.onmouseup = closeDragElement;
-      // call a function whenever the cursor moves:
-      document.onmousemove = elementDrag;
-
-    }
-
-
-    function closeDragElement(e) {
-      //parentDimens = undefined;
-      // stop moving when mouse button is released:
-      document.onmouseup = null;
-      document.onmousemove = null;
-
-      //parentDimens = undefined;
-    }
-
-    function elementDrag(e) {
-      console.log(e);
-      e = e || window.event;
-      e.preventDefault();
-      console.log("attention: parentDimens is: ", parentDimens);
-
-      var x = e.pageX - parentDimens.left;
-      console.log("EVENT", e);
-      console.log("PARENT", parentDimens);
-      
-      var xPct = (e.offsetX / parentDimens.width) * 100,
-        yPct = (e.offsetY / parentDimens.height) * 100;
-
-      console.log(xPct + " + " + yPct);
-      thisEl.style.left = `${xPct}%`;
-      thisEl.style.top = `${yPct}%`;
-
-      
-      //TODO: Make % equal to math calcs
-    }
-  }
+	mapContainer.appendChild(roomDiv);
+	}
 
   function getUserAsync() {
     return new Promise((resolve, reject) => {
