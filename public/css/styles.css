@@ -25,6 +25,14 @@
     height: auto;
 }
 
+#addRoomDiv{
+    display: none;
+}
+#addRoomDiv.vis{
+    display: block;
+}
+
+
 #current-room-info {
   display: flex;
   flex-flow: column;

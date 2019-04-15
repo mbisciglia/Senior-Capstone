@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <style>
-    #mydiv {
-      position: relative;
+    #addRoomDiv {
+      position: absolute;
       z-index: 9;
       text-align: center;
       border: 3px solid #ebdd17;
@@ -67,11 +67,8 @@
               src="https://i.redd.it/uo0u67glvlq01.jpg"
             />
 
-            <div id="mydiv" style="height: 200px; width: 250px; display: none">
+            <div id="addRoomDiv">
               <div id="mydivheader">Click here to move</div>
-              <p>Move</p>
-              <p>&</p>
-              <p>Resize</p>
             </div>
           </div>
         </div>
@@ -92,21 +89,21 @@
   });
 
   document.getElementById("addRoomBTN").addEventListener("click", function() {
-    var ele = document.getElementById("mydiv");
-    if (ele.style.display == "block") {
+    var ele = document.getElementById("addRoomDiv");
+    if (ele.classList.contains("vis")) {
       console.log("div already created");
-      ele.style.display = "none";
-      ele.style.top = 0;
-      ele.style.left = 0;
-      ele.style.height = "200px";
-      ele.style.width = "250px";
+      ele.classList.remove("vis");
     } else {
-      ele.style.display = "block";
+      ele.classList.add("vis");
+      ele.style.top = "0";
+      ele.style.left = "0";
+      ele.style.height = "30%";
+      ele.style.width = "30%";
     }
   });
 
   document.getElementById("confRoomBTN").addEventListener("click", function() {
-    var selectedArea = document.getElementById("mydiv");
+    var selectedArea = document.getElementById("addRoomDiv");
     var roomNum = document.getElementById("roomNum");
 
     if (selectedArea.style.display == "none") {
@@ -114,26 +111,27 @@
     } else if (roomNum.value == "") {
       alert("Please first enter in a room number");
     } else {
+      //TODO: make look like Display
       var imgDiv = document.getElementById("mapContainer");
-      var testDiv = document.createElement("div");
-      imgDiv.appendChild(testDiv);
+      var mapDiv = document.createElement("div");
+      imgDiv.appendChild(mapDiv);
 
       var t = document.createTextNode(roomNum.value);
 
-      testDiv.appendChild(t);
-      testDiv.style.textAlign = "center";
-      testDiv.style.verticalAlign = "middle";
-      testDiv.style.lineHeight = selectedArea.style.height;
-      testDiv.style.fontSize = "200%";
-      testDiv.style.color = "yellow";
+      mapDiv.appendChild(t);
+      mapDiv.style.textAlign = "center";
+      mapDiv.style.verticalAlign = "middle";
+      mapDiv.style.lineHeight = selectedArea.style.height;
+      mapDiv.style.fontSize = "200%";
+      mapDiv.style.color = "yellow";
 
-      testDiv.style.top = selectedArea.style.top;
-      testDiv.style.left = selectedArea.style.left;
-      testDiv.style.height = selectedArea.style.height;
-      testDiv.style.width = selectedArea.style.width;
-      testDiv.style.backgroundColor = "green";
-      testDiv.style.opacity = "0.6";
-      testDiv.style.position = "absolute";
+      mapDiv.style.top = selectedArea.style.top;
+      mapDiv.style.left = selectedArea.style.left;
+      mapDiv.style.height = selectedArea.style.height;
+      mapDiv.style.width = selectedArea.style.width;
+      mapDiv.style.backgroundColor = "green";
+      mapDiv.style.opacity = "0.6";
+      mapDiv.style.position = "absolute";
 
       selectedArea.style.display = "none";
       selectedArea.style.top = 0;
@@ -146,10 +144,10 @@
       roomNum.value = "";
 
       var floor = document.getElementById("floorList").value;
-      var top = testDiv.style.top;
-      var left = testDiv.style.left;
-      var height = testDiv.style.height;
-      var width = testDiv.style.width;
+      var top = mapDiv.style.top;
+      var left = mapDiv.style.left;
+      var height = mapDiv.style.height;
+      var width = mapDiv.style.width;
 
       var db = firebase.database();
       var dbref = db.ref(acc + "/images/" + "floorData/" + floor + "/");
@@ -163,53 +161,63 @@
     }
   });
 
-  dragElement(document.getElementById("mydiv"));
-  function dragElement(elmnt) {
-    var pos1 = 0,
-      pos2 = 0,
-      pos3 = 0,
-      pos4 = 0;
-    if (document.getElementById(elmnt.id + "header")) {
-      /* if present, the header is where you move the DIV from:*/
-      document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-    } else {
-      /* otherwise, move the DIV from anywhere inside the DIV:*/
-      elmnt.onmousedown = dragMouseDown;
+  setupDragElement(document.getElementById("addRoomDiv"));
+  function setupDragElement(element) {
+    var parentDimens = undefined;
+    var thisEl = element;
+    parentDimens = document.getElementById("mapImg").getBoundingClientRect();
+
+
+    if (document.getElementById(element.id + "header")) {
+      document.getElementById(element.id + "header").onmousedown = dragMouseDown;
+    }
+    else{
+      element.onmousedown = dragMouseDown;
     }
 
-    function dragMouseDown(e) {
+
+    function dragMouseDown(e)
+    {
       e = e || window.event;
       e.preventDefault();
       // get the mouse cursor position at startup:
-      pos3 = e.clientX;
-      pos4 = e.clientY;
+      console.log("EVENT", e);
+      //elementDrag(e);
       document.onmouseup = closeDragElement;
       // call a function whenever the cursor moves:
       document.onmousemove = elementDrag;
+
+    }
+
+
+    function closeDragElement(e) {
+      //parentDimens = undefined;
+      // stop moving when mouse button is released:
+      document.onmouseup = null;
+      document.onmousemove = null;
+
+      //parentDimens = undefined;
     }
 
     function elementDrag(e) {
+      console.log(e);
       e = e || window.event;
       e.preventDefault();
-      // calculate the new cursor position:
-      pos1 = pos3 - e.clientX;
-      pos2 = pos4 - e.clientY;
-      pos3 = e.clientX;
-      pos4 = e.clientY;
-      // set the element's new position:
-      elmnt.style.top = elmnt.offsetTop - pos2 + "px";
-      elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
-      console.log("top: " + elmnt.style.top);
-      console.log("left: " + elmnt.style.left);
-      console.log(
-        "Dimensions: " + elmnt.style.height + " x " + elmnt.style.width
-      );
-    }
+      console.log("attention: parentDimens is: ", parentDimens);
 
-    function closeDragElement() {
-      /* stop moving when mouse button is released:*/
-      document.onmouseup = null;
-      document.onmousemove = null;
+      var x = e.pageX - parentDimens.left;
+      console.log("EVENT", e);
+      console.log("PARENT", parentDimens);
+      
+      var xPct = (e.offsetX / parentDimens.width) * 100,
+        yPct = (e.offsetY / parentDimens.height) * 100;
+
+      console.log(xPct + " + " + yPct);
+      thisEl.style.left = `${xPct}%`;
+      thisEl.style.top = `${yPct}%`;
+
+      
+      //TODO: Make % equal to math calcs
     }
   }
 
