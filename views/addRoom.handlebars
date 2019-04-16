@@ -1,79 +1,68 @@
 <!DOCTYPE html>
 <html>
-  <style>
-    #addRoomDiv {
-      position: absolute;
-      z-index: 9;
-      text-align: center;
-      border: 3px solid #ebdd17;
-      background-color: orange;
-      resize: both;
-      overflow: auto;
-      opacity: 0.7;
-    }
+<style>
+  #addRoomDiv {
+    position: absolute;
+    z-index: 9;
+    text-align: center;
+    border: 3px solid #ebdd17;
+    background-color: orange;
+    resize: both;
+    overflow: auto;
+    opacity: 0.7;
+  }
+</style>
 
-  </style>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-2">
+        <select id="floorList" style="margin-bottom: 1em"></select>
+        <button type="button" id="addRoomBTN" class="btn btn-success" style="margin-bottom: 1em">
+          Add Room
+        </button>
 
-  <body>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-2">
-          <select id="floorList" style="margin-bottom: 1em"></select>
-          <button
-            type="button"
-            id="addRoomBTN"
-            class="btn btn-success"
-            style="margin-bottom: 1em"
-          >
-            Add Room
-          </button>
-
-          <div class="form-group">
-            <label for="addfloor">
-              Room Number
-            </label>
-            <input class="form-control" id="roomNum" />
-          </div>
-
-          <button
-            type="button"
-            id="confRoomBTN"
-            class="btn btn-success"
-            style="margin-bottom: 1em"
-          >
-            Confirm Room
-          </button>
-          <button
-            type="button"
-            id="confFloorBTN"
-            class="btn btn-success"
-            style="margin-bottom: 1em"
-          >
-            Confirm Floor
-          </button>
+        <div class="form-group">
+          <label for="addfloor">
+            Room Number
+          </label>
+          <input class="form-control" id="roomNum" />
         </div>
-        <div class="col-md-10">
-          <div id="mapContainer">
-            <img
-              id="mapImg"
-              alt="Bootstrap Image Preview"
-              src="https://i.redd.it/uo0u67glvlq01.jpg"
-            />
 
-            <div id="addRoomDiv">
-            </div>
+        <button type="button" id="confRoomBTN" class="btn btn-success" style="margin-bottom: 1em">
+          Confirm Room
+        </button>
+        <button type="button" id="confFloorBTN" class="btn btn-success" style="margin-bottom: 4em">
+          Confirm Floor
+        </button>
+
+
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span>Available Sensors</span>
+          <span id="numSensors" class="badge badge-secondary badge-pill" style="background-color:black;"></span>
+        </h4>
+        <ul id="freeNodesList" class="list-group">
+        </ul>
+      </div>
+      <div class="col-md-10">
+        <div id="mapContainer">
+          <img id="mapImg" alt="Bootstrap Image Preview" src="https://i.redd.it/uo0u67glvlq01.jpg" />
+
+          <div id="addRoomDiv" class="list-group">
           </div>
         </div>
       </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
 
 <script src="/js/dragElement.js"></script>
 <script>
-	var dragger = null;
+  var dragger = null;
   (() => {
-    document.getElementById("floorList").addEventListener("change", function() {
+    document.getElementById("floorList").addEventListener("change", function () {
       loadFloor(this.value);
     });
 
@@ -83,11 +72,11 @@
     );
   })();
 
-  document.getElementById("confFloorBTN").addEventListener("click", function() {
+  document.getElementById("confFloorBTN").addEventListener("click", function () {
     window.location = "display";
   });
 
-  document.getElementById("addRoomBTN").addEventListener("click", function() {
+  document.getElementById("addRoomBTN").addEventListener("click", function () {
     var ele = document.getElementById("addRoomDiv");
     if (ele.classList.contains("vis")) {
       console.log("div already created");
@@ -101,7 +90,7 @@
     }
   });
 
-  document.getElementById("confRoomBTN").addEventListener("click", function() {
+  document.getElementById("confRoomBTN").addEventListener("click", function () {
     var selectedArea = document.getElementById("addRoomDiv");
     var roomNum = document.getElementById("roomNum");
 
@@ -110,39 +99,39 @@
     } else if (roomNum.value == "") {
       alert("Please first enter in a room number");
     } else {
-			var roomData = dragger.getPercentageDimensions();
-      
+      var roomData = dragger.getPercentageDimensions();
+
       var acc = getCookie("uid");
       var room = roomNum.value;
       roomNum.value = "";
 
       var floor = document.getElementById("floorList").value;
 
-			roomData.room = room;
+      roomData.room = room;
 
-			addLocalRoomToMap(roomData,document.getElementById("mapContainer"));
+      addLocalRoomToMap(roomData, document.getElementById("mapContainer"));
 
       var db = firebase.database();
       var dbref = db.ref(acc + "/images/" + "floorData/" + floor + "/");
       dbref.push(roomData);
 
-			dragger.reset();
+      dragger.reset();
     }
   });
 
-	function addLocalRoomToMap(roomData, mapContainer){
-		var roomDiv = document.createElement("div");
-		roomDiv.classList.add('room-div');
+  function addLocalRoomToMap(roomData, mapContainer) {
+    var roomDiv = document.createElement("div");
+    roomDiv.classList.add('room-div');
 
-		roomDiv.dataset.roomNumber = roomData.room;
+    roomDiv.dataset.roomNumber = roomData.room;
 
-	 roomDiv.style.top = roomData.top;
-      roomDiv.style.left = roomData.left;
-      roomDiv.style.height = roomData.height;
-      roomDiv.style.width = roomData.width;
+    roomDiv.style.top = roomData.top;
+    roomDiv.style.left = roomData.left;
+    roomDiv.style.height = roomData.height;
+    roomDiv.style.width = roomData.width;
 
-	mapContainer.appendChild(roomDiv);
-	}
+    mapContainer.appendChild(roomDiv);
+  }
 
   function getUserAsync() {
     return new Promise((resolve, reject) => {
@@ -159,7 +148,7 @@
             reject(resp);
           }
         })
-        .then(function(data) {
+        .then(function (data) {
           console.log(data);
           currUser = data;
 
@@ -172,30 +161,149 @@
     // expected output: 'resolved'
   }
 
+  function fetchRoomList() {
+    return new Promise((resolve, reject) => {
+      var acc = getCookie("uid");
+      var floor = document.getElementById("floorList").value;
+
+      db = firebase.database().ref(acc + "/" + floor);
+      db.once('value')
+        .then(function (dataSnapshot) {
+          return (dataSnapshot.val());
+        }).then(function (rooms) {
+          var keys = [];
+          for (var k in rooms) {
+            keys.push(k);
+          }
+          resolve(keys);
+        });
+    });
+  }
+
+  function fetchRooms() {
+    var rooms = [];
+
+    return new Promise((resolve, reject) => {
+      var acc = getCookie("uid");
+      var floor = document.getElementById("floorList").value;
+
+      db = firebase
+        .database()
+        .ref(acc + "/images/" + "floorData/" + floor + "/");
+      db.on("value", function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+          var childData = childSnapshot.val();
+
+          rooms.push(childData);
+        });
+
+        resolve(rooms);
+      });
+    });
+  }
+
+  function clearCurrentRooms() {
+    var rooms = document.querySelectorAll("#mapContainer .room-div");
+
+    rooms.forEach(r => r.remove());
+  }
+
+  //roomOBJ = { room: room, top: top, left: left, height: height, width: width }
+  function recreateDiv(roomOBJ) {
+    var imgDiv = document.getElementById("mapContainer");
+    var roomDiv = document.createElement("div");
+
+    roomDiv.dataset.roomNumber = roomOBJ.room;
+    roomDiv.classList.add("room-div");
+
+    roomDiv.style.top = roomOBJ.top;
+    roomDiv.style.left = roomOBJ.left;
+    roomDiv.style.height = roomOBJ.height;
+    roomDiv.style.width = roomOBJ.width;
+
+    imgDiv.appendChild(roomDiv);
+  }
+
+  function clearCurrentRoomList() {
+    var freeNodesList = document.getElementById("freeNodesList");
+    while (freeNodesList.firstChild) {
+      freeNodesList.removeChild(freeNodesList.firstChild);
+    }
+    document.getElementById("numSensors").innerHTML = "";
+  }
+
+  function loadRoomList() {
+    console.log("Inside loadRoomList");
+    var ul = document.getElementById("freeNodesList");
+    var count = document.getElementById("numSensors");
+
+    
+
+    fetchRoomList()
+      .then(rooms => {
+        console.log("Did this work? Promise result", rooms);
+        console.log(rooms.length);
+        count.innerHTML = rooms.length;
+
+        for (var i = 0, l = rooms.length; i < l; i++) {
+          console.log("Inside loadRoomList: " + i + ": " + rooms[i]);
+          var li = document.createElement("li");
+          li.className = "list-group-item";
+          li.appendChild(document.createTextNode(rooms[i]));
+          ul.appendChild(li);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  function loadRooms() {
+    clearCurrentRooms();
+    //clear current available list
+    fetchRooms()
+      .then(rooms => {
+        console.log("Promise result", rooms);
+        console.log(rooms.length);
+
+        for (var i = 0, l = rooms.length; i < l; i++) {
+          console.log(i + ": " + rooms[i].room);
+          recreateDiv(rooms[i]);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
   function loadFloor(floorName) {
+    clearCurrentRoomList();
     console.log(`Loading ${floorName}`);
     var storageRef = firebase.storage().ref();
     var acc = getCookie("uid");
     var ref = storageRef.child(acc + "/" + floorName);
     ref
       .getDownloadURL()
-      .then(function(url) {
+      .then(function (url) {
         // `url` is the download URL for 'images/stars.jpg'
 
         // This can be downloaded directly:
         var xhr = new XMLHttpRequest();
         xhr.responseType = "blob";
-        xhr.onload = function(event) {
+        xhr.onload = function (event) {
           var blob = xhr.response;
         };
         xhr.open("GET", url);
         xhr.send();
+        loadRooms();
+        loadRoomList();
+
 
         // Or inserted into an <img> element:
         var img = document.getElementById("mapImg");
         img.src = url;
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
         console.log("there was an error getting images");
       });
@@ -203,16 +311,18 @@
 
   loadFloorNames();
 
-  function fetchNames() {
+
+
+
+  function fetchFloorNames() {
     var names = [];
 
     var isFirst = true;
     return new Promise((resolve, reject) => {
       var acc = getCookie("uid");
-
       db = firebase.database().ref(acc + "/images/" + "floors/");
-      db.on("value", function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
+      db.on("value", function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
           var childData = childSnapshot.val();
 
           if (isFirst) {
@@ -232,7 +342,7 @@
     var list = document.getElementById("floorList");
     //var list2 = document.getElementById("floorDropdown");
 
-    fetchNames()
+    fetchFloorNames()
       .then(names => {
         console.log("Promise result", names);
         for (var i = 0, l = names.length; i < l; i++) {
