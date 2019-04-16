@@ -60,7 +60,10 @@
 
         Object.keys(roomData).forEach(k => {
           if (k === "time") {
-            //TODO: Parse time
+            var s = roomData[k];
+            var n = s.indexOf('.');
+            s = s.substring(0, n != -1 ? n : s.length);
+            roomData[k] = s;
           }
           dataHtmlString += `<span>${k}: ${roomData[k]}</span>`;
         });

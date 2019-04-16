@@ -1,68 +1,87 @@
 <!DOCTYPE html>
 <html>
-<style>
-  #addRoomDiv {
-    position: absolute;
-    z-index: 9;
-    text-align: center;
-    border: 3px solid #ebdd17;
-    background-color: orange;
-    resize: both;
-    overflow: auto;
-    opacity: 0.7;
-  }
-</style>
+  <style>
+    #addRoomDiv {
+      position: absolute;
+      z-index: 9;
+      text-align: center;
+      border: 3px solid #ebdd17;
+      background-color: orange;
+      resize: both;
+      overflow: auto;
+      opacity: 0.7;
+    }
+  </style>
 
-<body>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-2">
-        <select id="floorList" style="margin-bottom: 1em"></select>
-        <button type="button" id="addRoomBTN" class="btn btn-success" style="margin-bottom: 1em">
-          Add Room
-        </button>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2">
+          <select id="floorList" style="margin-bottom: 1em"></select>
+          <button
+            type="button"
+            id="addRoomBTN"
+            class="btn btn-success"
+            style="margin-bottom: 1em"
+          >
+            Add Room
+          </button>
 
-        <div class="form-group">
-          <label for="addfloor">
-            Room Number
-          </label>
-          <input class="form-control" id="roomNum" />
+          <div class="form-group">
+            <label for="addfloor">
+              Room Number
+            </label>
+            <input class="form-control" id="roomNum" />
+          </div>
+
+          <button
+            type="button"
+            id="confRoomBTN"
+            class="btn btn-success"
+            style="margin-bottom: 1em"
+          >
+            Confirm Room
+          </button>
+          <button
+            type="button"
+            id="confFloorBTN"
+            class="btn btn-success"
+            style="margin-bottom: 4em"
+          >
+            Confirm Floor
+          </button>
+
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span>Available Sensors</span>
+            <span
+              id="numSensors"
+              class="badge badge-secondary badge-pill"
+              style="background-color:black;"
+            ></span>
+          </h4>
+          <ul id="freeNodesList" class="list-group"></ul>
         </div>
+        <div class="col-md-10">
+          <div id="mapContainer">
+            <img
+              id="mapImg"
+              alt="Bootstrap Image Preview"
+              src="https://i.redd.it/uo0u67glvlq01.jpg"
+            />
 
-        <button type="button" id="confRoomBTN" class="btn btn-success" style="margin-bottom: 1em">
-          Confirm Room
-        </button>
-        <button type="button" id="confFloorBTN" class="btn btn-success" style="margin-bottom: 4em">
-          Confirm Floor
-        </button>
-
-
-        <h4 class="d-flex justify-content-between align-items-center mb-3">
-          <span>Available Sensors</span>
-          <span id="numSensors" class="badge badge-secondary badge-pill" style="background-color:black;"></span>
-        </h4>
-        <ul id="freeNodesList" class="list-group">
-        </ul>
-      </div>
-      <div class="col-md-10">
-        <div id="mapContainer">
-          <img id="mapImg" alt="Bootstrap Image Preview" src="https://i.redd.it/uo0u67glvlq01.jpg" />
-
-          <div id="addRoomDiv" class="list-group">
+            <div id="addRoomDiv" class="list-group"></div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
-
+  </body>
 </html>
 
 <script src="/js/dragElement.js"></script>
 <script>
   var dragger = null;
   (() => {
-    document.getElementById("floorList").addEventListener("change", function () {
+    document.getElementById("floorList").addEventListener("change", function() {
       loadFloor(this.value);
     });
 
@@ -72,11 +91,11 @@
     );
   })();
 
-  document.getElementById("confFloorBTN").addEventListener("click", function () {
+  document.getElementById("confFloorBTN").addEventListener("click", function() {
     window.location = "display";
   });
 
-  document.getElementById("addRoomBTN").addEventListener("click", function () {
+  document.getElementById("addRoomBTN").addEventListener("click", function() {
     var ele = document.getElementById("addRoomDiv");
     if (ele.classList.contains("vis")) {
       console.log("div already created");
@@ -90,7 +109,7 @@
     }
   });
 
-  document.getElementById("confRoomBTN").addEventListener("click", function () {
+  document.getElementById("confRoomBTN").addEventListener("click", function() {
     var selectedArea = document.getElementById("addRoomDiv");
     var roomNum = document.getElementById("roomNum");
 
@@ -116,12 +135,14 @@
       dbref.push(roomData);
 
       dragger.reset();
+      clearCurrentRoomList();
+      loadRoomList();
     }
   });
 
   function addLocalRoomToMap(roomData, mapContainer) {
     var roomDiv = document.createElement("div");
-    roomDiv.classList.add('room-div');
+    roomDiv.classList.add("room-div");
 
     roomDiv.dataset.roomNumber = roomData.room;
 
@@ -148,7 +169,7 @@
             reject(resp);
           }
         })
-        .then(function (data) {
+        .then(function(data) {
           console.log(data);
           currUser = data;
 
@@ -167,10 +188,11 @@
       var floor = document.getElementById("floorList").value;
 
       db = firebase.database().ref(acc + "/" + floor);
-      db.once('value')
-        .then(function (dataSnapshot) {
-          return (dataSnapshot.val());
-        }).then(function (rooms) {
+      db.once("value")
+        .then(function(dataSnapshot) {
+          return dataSnapshot.val();
+        })
+        .then(function(rooms) {
           var keys = [];
           for (var k in rooms) {
             keys.push(k);
@@ -190,8 +212,8 @@
       db = firebase
         .database()
         .ref(acc + "/images/" + "floorData/" + floor + "/");
-      db.on("value", function (snapshot) {
-        snapshot.forEach(function (childSnapshot) {
+      db.on("value", function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
           var childData = childSnapshot.val();
 
           rooms.push(childData);
@@ -237,25 +259,40 @@
     var ul = document.getElementById("freeNodesList");
     var count = document.getElementById("numSensors");
 
-    
+    fetchRoomList().then(rooms => {
+      console.log("Did this work? Promise result", rooms);
+      console.log(rooms.length);
+      count.innerHTML = rooms.length;
+      fetchRooms()
+        .then(madeRooms => {
+          //console.log("Made in madeRooms " + madeRooms);
 
-    fetchRoomList()
-      .then(rooms => {
-        console.log("Did this work? Promise result", rooms);
-        console.log(rooms.length);
-        count.innerHTML = rooms.length;
+          //rooms are datapoints available on the db
+          for (var i = 0, l = rooms.length; i < l; i++) {
+            console.log("Inside loadRoomList: " + i + ": " + rooms[i]);
+            var li = document.createElement("li");
+            li.className = "list-group-item";
+            li.appendChild(document.createTextNode(rooms[i]));
 
-        for (var i = 0, l = rooms.length; i < l; i++) {
-          console.log("Inside loadRoomList: " + i + ": " + rooms[i]);
-          var li = document.createElement("li");
-          li.className = "list-group-item";
-          li.appendChild(document.createTextNode(rooms[i]));
-          ul.appendChild(li);
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
+
+            for (var j = 0, m = madeRooms.length; j < m; j++)
+            {
+              if(rooms[i] == madeRooms[j].room)
+              {
+                console.log("Bang Bang: ? : " + rooms[i]);
+                li.className = "list-group-item list-group-item-success";
+              }
+              console.log()
+            }
+            ul.appendChild(li);
+
+          }
+
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    });
   }
 
   function loadRooms() {
@@ -284,13 +321,13 @@
     var ref = storageRef.child(acc + "/" + floorName);
     ref
       .getDownloadURL()
-      .then(function (url) {
+      .then(function(url) {
         // `url` is the download URL for 'images/stars.jpg'
 
         // This can be downloaded directly:
         var xhr = new XMLHttpRequest();
         xhr.responseType = "blob";
-        xhr.onload = function (event) {
+        xhr.onload = function(event) {
           var blob = xhr.response;
         };
         xhr.open("GET", url);
@@ -298,21 +335,17 @@
         loadRooms();
         loadRoomList();
 
-
         // Or inserted into an <img> element:
         var img = document.getElementById("mapImg");
         img.src = url;
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
         console.log("there was an error getting images");
       });
   }
 
   loadFloorNames();
-
-
-
 
   function fetchFloorNames() {
     var names = [];
@@ -321,8 +354,8 @@
     return new Promise((resolve, reject) => {
       var acc = getCookie("uid");
       db = firebase.database().ref(acc + "/images/" + "floors/");
-      db.on("value", function (snapshot) {
-        snapshot.forEach(function (childSnapshot) {
+      db.on("value", function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
           var childData = childSnapshot.val();
 
           if (isFirst) {

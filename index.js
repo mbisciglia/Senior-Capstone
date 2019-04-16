@@ -50,6 +50,18 @@ app.get("/addRoom", async (req, res) => {
   }
 });
 
+app.get("/signOut", async (req, res) => {
+  var user = firebase.auth().currentUser;
+
+  if (user) {
+    clearCookie();
+    res.render("login");
+  } else {
+    res.status(400).send("CAN NOT SIGN OUT UNTIL SIGNED IN");
+  }
+});
+
+
 app.get("/addFloor", async (req, res) => {
   var user = firebase.auth().currentUser;
   if (user) {
