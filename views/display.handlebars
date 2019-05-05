@@ -41,6 +41,15 @@
         </div>
       </div>
     </div>
+
+    <!-- The Modal -->
+  <div id="myModal" class="modal" >
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p id="errorBox">error msg</p>
+    </div>
+  </div>
   </body>
 </html>
 
@@ -61,7 +70,7 @@
         Object.keys(roomData).forEach(k => {
           if (k === "time") {
             var s = roomData[k];
-            var n = s.indexOf('.');
+            var n = s.indexOf(".");
             s = s.substring(0, n != -1 ? n : s.length);
             roomData[k] = s;
           }
@@ -205,9 +214,9 @@
       db.on("value", function(snapshot) {
         snapshot.forEach(function(childSnapshot) {
           var childData = childSnapshot.val();
-
           if (isFirst) {
             isFirst = false;
+            //console.log(childData.name);
             loadFloor(childData.name);
           }
 
@@ -226,6 +235,26 @@
 
     fetchNames()
       .then(names => {
+        console.log(names.length);
+        if (names.length == 0) {
+          var modal = document.getElementById("myModal");
+          // Get the <span> element that closes the modal
+          var span = document.getElementsByClassName("close")[0];
+          var content = document.getElementById("errorBox");
+
+          content.innerHTML = "No floors found in your account, please add them in addFloor.";
+          modal.style.display = "block";
+          // When the user clicks on <span> (x), close the modal
+          span.onclick = function() {
+            modal.style.display = "none";
+          };
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function(event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
+            }
+          };
+        }
         console.log("Promise result", names);
         for (var i = 0, l = names.length; i < l; i++) {
           var option = document.createElement("option");
