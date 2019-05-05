@@ -57,8 +57,8 @@
   <body>
     <div class="container login-container">
       <div class="row">
-        <div class="col-md-6 login-form-1">
-          <h3>Sign In</h3>
+        <div class="col-md-6 login-form-1" style="background: #4b6777">
+          <h3 class="redText">Sign In</h3>
           <div class="form-group">
             <input
               type="text"
@@ -89,7 +89,7 @@
             <a href="#" class="btnForgetPwd" id="forgot">Forget Password?</a>
           </div>
         </div>
-        <div class="col-md-6 login-form-2">
+        <div class="col-md-6 login-form-2" style="background: #ce9e62">
           <h3>Create Account</h3>
           <div class="form-group">
             <input
@@ -185,7 +185,7 @@
         } else {
           document.cookie = "uid=" + respBody;
           console.log(respBody);
-          window.location = "display";
+          window.location = "addFloor";
         }
       })
       .catch(err => {

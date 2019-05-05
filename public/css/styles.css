@@ -13,7 +13,7 @@
   cursor: se-resize;
 }
 .draggable-handle {
-  background: rgba(0, 200, 0, 0.7);
+  background: rgba(75, 103, 119, 0.9);
   color: #000;
   padding: 0.5rem 0;
   text-align: center;
@@ -22,11 +22,11 @@
 }
 
 .room-div {
-  background: rgba(0, 160, 0, 0.7);
+  background: rgba(75, 103, 119, 0.9);
   position: absolute;
   text-align: center;
   font-size: 2rem;
-  color: yellow;
+  color: #ce9e62;
 }
 .room-div::after {
   content: attr(data-room-number);
@@ -75,6 +75,7 @@
 .testClass {
   background: red;
 }
+
 
 .room166 {
   position: absolute;
