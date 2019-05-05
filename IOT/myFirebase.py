@@ -26,7 +26,7 @@ def getUserID():
 
 
 
-    # Log the user in
+
     user = auth.sign_in_with_email_and_password(email, password)
 
     return user['localId']
@@ -43,7 +43,9 @@ def init(firebaseUID, floor, roomNum):
         "messagingSenderId": "567827194064"
     }
     MAC = getMAC.MAC
-
+    firebase = pyrebase.initialize_app(config)
+    db = firebase.database()
+    
     db.child(firebaseUID).child(floor).child(roomNum).set(macObj)
     firebase = pyrebase.initialize_app(config)
     db = firebase.database()

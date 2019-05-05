@@ -12,8 +12,6 @@ floor = raw_input("Enter floor name for your sensor\n")
 roomNum = raw_input("Enter room number for your sensor\n")
 
 
-myFirebase.pushData(firebaseUID, floor, roomNum, sensors)
-
 
 #children information
 sensors = {"temp": 0, "humidity": 0, "time": str(datetime.utcnow())}
