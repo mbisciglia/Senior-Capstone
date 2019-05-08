@@ -28,7 +28,7 @@
           <div class="dropdown">
             <select id="floorList" style="margin-bottom: 1em"></select>
           </div>
-          <div class="jumbotron" id="current-room-info"></div>
+          <div class="jumbotron" id="current-room-info" style="font"></div>
         </div>
         <div class="col-md-8">
           <div id="mapContainer">
@@ -73,6 +73,14 @@
             var n = s.indexOf(".");
             s = s.substring(0, n != -1 ? n : s.length);
             roomData[k] = s;
+          }
+          else if (k === "temp")
+          {
+            roomData[k] += " °F";
+          }
+          else if (k === "humidity")
+          {
+            roomData[k] += " %";
           }
           dataHtmlString += `<span>${k}: ${roomData[k]}</span>`;
         });

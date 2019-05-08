@@ -59,6 +59,7 @@
 #current-room-info {
   display: flex;
   flex-flow: column;
+  font-size: x-large;
 }
 #current-room-info .roominfo-title {
   font-size: 2rem;
