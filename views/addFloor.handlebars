@@ -74,6 +74,11 @@
 </html>
 
 <script>
+(() => {
+  document.getElementById("mapImg").style.width = "auto";
+  })();
+
+
   document.getElementById("addRooms").addEventListener("click", event => {
     event.preventDefault();
     window.location = "addRoom";
@@ -117,6 +122,7 @@
       })
       .then(myURL => {
         var img = document.getElementById("mapImg");
+        img.style.width = "100%";
         img.src = myURL;
 
         document.getElementById("myAlert").style.display = "block";
