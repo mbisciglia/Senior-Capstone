@@ -66,8 +66,6 @@ def pushData(firebaseUID, floor, roomNum, dataOBJ):
 
 
 
-
-
     firebase = pyrebase.initialize_app(config)
     db = firebase.database()
     db.child(firebaseUID).child(floor).child(roomNum).child("Readings").set(dataOBJ)
